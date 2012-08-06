@@ -1,12 +1,7 @@
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 
-##
-# Your previous /Users/eben/.bash_profile file was backed up as /Users/eben/.bash_profile.macports-saved_2011-10-04_at_14:46:18
-##
-
-# MacPorts Installer addition on 2011-10-04_at_14:46:18: adding an appropriate PATH variable for use with MacPorts.
+# macports path mod
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
 export PATH="/usr/local/bin:$PATH"
 
 export CLICOLOR=1
@@ -15,10 +10,8 @@ function parse_git_branch {
  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
-# If this is an xterm set the title to user@host:dir
 case "$TERM" in
 	xterm*|rxvt*)
-	#export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}\$(parse_git_branch)\: ${PWD/$HOME/~}\007"'
 	export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}: ${PWD/#$HOME/~}\007"';;*);;
 esac
 
@@ -31,7 +24,6 @@ NC="$(tput sgr0)" # No Color
 Orange=$'\e[0;33m'
 Grey=$'\e[00;37;40m'
 
-# User specific aliases and functions
 # User specific aliases and functions
 PS1='[\t] \[$Orange\]\u\[$NC\]@\[$LightRed\]\h\[$NC\]$(parse_git_branch)\w]\$ '
 #PS1='[\t] \[$Orange\]\u\[$NC\]@\[$LightRed\]\h\[$NC\] \w]\$ '
