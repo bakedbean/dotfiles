@@ -23,6 +23,7 @@ set showtabline=2
 set wildmenu
 set wildmode=list:longest,full
 
+" colorize whitespace and tab indents, kind of annoying but interesting
 ""highlight LiteralTabs ctermbg=darkblue guibg=darkgreen
 ""match LiteralTabs /\s\  /
 ""highlight ExtraWhitespace ctermbg=darkblue guibg=darkgreen
@@ -37,6 +38,7 @@ set backspace=indent,eol,start
 
 " Enable indentation matching for =>'s
 filetype plugin indent on
+" hack to autoload autoclose
 runtime! plugin/autoclose.vim
 
 " key mappings
@@ -47,4 +49,5 @@ nmap _Y :!echo ""> ~/.vi_tmp<CR><CR>:w! ~/.vi_tmp<CR>
 vmap _Y :w! ~/.vi_tmp<CR>
 nmap _P :r ~/.vi_tmp<CR>
 
+" close vim if NERDTree is the only buffer left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
