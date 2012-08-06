@@ -8,8 +8,6 @@
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 # S3 Credentials
-export S3_KEY=AKIAIJYTSKQVXHFZRE6Q
-export S3_SECRET=pUYUQ2G8YcqsEwuZEESjJ3dC94ItgFSYML3zri7/
 export PATH="/usr/local/bin:$PATH"
 
 export CLICOLOR=1
