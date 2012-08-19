@@ -54,6 +54,10 @@ filetype plugin indent on
 " hack to autoload autoclose
 runtime! plugin/autoclose.vim
 
+" powerline plugin customizations
+let g:Powerline_symbols = 'fancy'
+call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
+
 " key mappings
 map <C-f> : TlistToggle <CR>
 map <C-g> : NERDTreeToggle <CR>
@@ -61,10 +65,6 @@ map <C-g> : NERDTreeToggle <CR>
 nmap _Y :!echo ""> ~/.vi_tmp<CR><CR>:w! ~/.vi_tmp<CR>
 vmap _Y :w! ~/.vi_tmp<CR>
 nmap _P :r ~/.vi_tmp<CR>
-
-let g:Powerline_symbols = 'fancy'
-"call Pl#Theme#InsertSegment('linesinfo', 'after', 'lineinfo')
-call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
 
 " close vim if NERDTree is the only buffer left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
