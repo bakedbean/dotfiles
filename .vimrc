@@ -57,10 +57,12 @@ runtime! plugin/autoclose.vim
 " powerline plugin customizations
 let g:Powerline_symbols = 'fancy'
 call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
+call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
 
 " key mappings
 map <C-f> : TlistToggle <CR>
 map <C-g> : NERDTreeToggle <CR>
+map <C-m> : MRU <CR>
 
 nmap _Y :!echo ""> ~/.vi_tmp<CR><CR>:w! ~/.vi_tmp<CR>
 vmap _Y :w! ~/.vi_tmp<CR>
