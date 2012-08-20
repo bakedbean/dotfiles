@@ -59,8 +59,10 @@ let g:Powerline_symbols = 'fancy'
 call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
 "call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
 
+let g:tagbar_left = 1
+
 " key mappings
-map <C-f> : TlistToggle <CR>
+map <C-f> : TagbarToggle <CR>
 map <C-g> : NERDTreeToggle <CR>
 map <C-m> : MRU <CR>
 
