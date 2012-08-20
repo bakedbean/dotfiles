@@ -57,7 +57,7 @@ runtime! plugin/autoclose.vim
 " powerline plugin customizations
 let g:Powerline_symbols = 'fancy'
 call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
-call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
+"call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
 
 " key mappings
 map <C-f> : TlistToggle <CR>
