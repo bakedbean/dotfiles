@@ -14,6 +14,8 @@ set smartindent
 set autoindent
 set expandtab
 set nowrap
+set laststatus=2
+set encoding=utf-8
 
 "colorscheme habilight2
 colorscheme jellybeans
@@ -22,6 +24,17 @@ set guioptions=em
 set showtabline=2
 set wildmenu
 set wildmode=list:longest,full
+
+set statusline=
+set statusline +=%1*\ %n\ %*            "buffer number
+set statusline +=%5*%{&ff}%*            "file format
+set statusline +=%3*%y%*                "file type
+set statusline +=%4*\ %<%F%*            "full path
+set statusline +=%2*%m%*                "modified flag
+set statusline +=%1*%=%5l%*             "current line
+set statusline +=%2*/%L%*               "total lines
+set statusline +=%1*%4v\ %*             "virtual column number
+set statusline +=%2*0x%04B\ %*          "character under cursor
 
 " colorize whitespace and tab indents, kind of annoying but interesting
 ""highlight LiteralTabs ctermbg=darkblue guibg=darkgreen
@@ -41,9 +54,17 @@ filetype plugin indent on
 " hack to autoload autoclose
 runtime! plugin/autoclose.vim
 
+" powerline plugin customizations
+let g:Powerline_symbols = 'fancy'
+call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
+"call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
+
+let g:tagbar_left = 1
+
 " key mappings
-map <C-f> : TlistToggle <CR>
+map <C-f> : TagbarToggle <CR>
 map <C-g> : NERDTreeToggle <CR>
+map <C-m> : MRU <CR>
 
 nmap _Y :!echo ""> ~/.vi_tmp<CR><CR>:w! ~/.vi_tmp<CR>
 vmap _Y :w! ~/.vi_tmp<CR>
