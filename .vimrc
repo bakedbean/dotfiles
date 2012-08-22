@@ -18,7 +18,6 @@ set laststatus=2
 set encoding=utf-8
 set scrolloff=5
 
-"colorscheme habilight2
 colorscheme jellybeans
 " jellybean specific overrides
 hi! LineNr ctermbg=235
@@ -31,17 +30,6 @@ set showtabline=2
 set wildmenu
 set wildmode=list:longest,full
 
-set statusline=
-set statusline +=%1*\ %n\ %*            "buffer number
-set statusline +=%5*%{&ff}%*            "file format
-set statusline +=%3*%y%*                "file type
-set statusline +=%4*\ %<%F%*            "full path
-set statusline +=%2*%m%*                "modified flag
-set statusline +=%1*%=%5l%*             "current line
-set statusline +=%2*/%L%*               "total lines
-set statusline +=%1*%4v\ %*             "virtual column number
-set statusline +=%2*0x%04B\ %*          "character under cursor
-
 " colorize whitespace and tab indents, kind of annoying but interesting
 ""highlight LiteralTabs ctermbg=darkblue guibg=darkgreen
 ""match LiteralTabs /\s\  /
@@ -49,7 +37,6 @@ set statusline +=%2*0x%04B\ %*          "character under cursor
 ""match ExtraWhitespace /\s\+$/
 
 set ruler
-"set mouse=nicr
 set mouse=a
 set viminfo='1000,f1,<500,:1000,/1000
 set history=500
@@ -57,8 +44,6 @@ set backspace=indent,eol,start
 
 " Enable indentation matching for =>'s
 filetype plugin indent on
-" hack to autoload autoclose
-runtime! plugin/autoclose.vim
 
 " powerline plugin customizations
 let g:Powerline_symbols = 'fancy'
