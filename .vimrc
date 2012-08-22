@@ -48,6 +48,7 @@ filetype plugin indent on
 " powerline plugin customizations
 let g:Powerline_symbols = 'fancy'
 call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
+let g:Powerline_mode_n = 'N'
 "call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
 
 let g:tagbar_left = 1
