@@ -22,3 +22,6 @@
 [submodule ".vim/bundle/phpfolding"]
 	path = .vim/bundle/phpfolding
 	url = https://github.com/vim-scripts/phpfolding.vim.git
+[submodule ".vim/bundle/mru"]
+	path = .vim/bundle/mru
+	url = https://github.com/vim-scripts/mru.vim.git
