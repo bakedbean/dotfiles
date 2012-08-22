@@ -16,9 +16,15 @@ set expandtab
 set nowrap
 set laststatus=2
 set encoding=utf-8
+set scrolloff=5
 
 "colorscheme habilight2
 colorscheme jellybeans
+" jellybean specific overrides
+hi! LineNr ctermbg=235
+hi! VertSplit ctermfg=236 ctermbg=236
+hi! ColorColumn ctermbg=235
+
 set number
 set guioptions=em
 set showtabline=2
@@ -85,3 +91,6 @@ noremap! <Right> <Esc>
 if &grepprg ==# 'grep -n $* /dev/null'
   set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude='*.log'\ --exclude=tags\ $*\ /dev/null
 endif
+
+" smarty syntax
+au BufRead,BufNewFile *.tpl set filetype=smarty
