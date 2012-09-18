@@ -52,6 +52,7 @@ let g:Powerline_mode_n = 'N'
 "call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
 
 let g:tagbar_left = 1
+let g:NERDTreeWinSize = 45
 
 " key mappings
 map <C-f> : TagbarToggle <CR>
