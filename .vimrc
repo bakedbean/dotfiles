@@ -55,9 +55,9 @@ let g:tagbar_left = 1
 let g:NERDTreeWinSize = 45
 
 " key mappings
-map <C-f> : TagbarToggle <CR>
-map <C-g> : NERDTreeToggle <CR>
-map <C-m> : MRU <CR>
+noremap <leader>i <Esc>:TagbarToggle<CR>
+noremap <leader>o <Esc>:NERDTreeToggle<CR>
+noremap <leader>p <Esc>:CommandT<CR>
 
 nmap _Y :!echo ""> ~/.vi_tmp<CR><CR>:w! ~/.vi_tmp<CR>
 vmap _Y :w! ~/.vi_tmp<CR>
@@ -74,6 +74,7 @@ noremap   <Up>     <NOP>
 noremap   <Down>   <NOP>
 noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
+inoremap <silent> <Esc> <C-O>:stopinsert<CR>
 
 if &grepprg ==# 'grep -n $* /dev/null'
   set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude='*.log'\ --exclude=tags\ $*\ /dev/null
