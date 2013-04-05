@@ -58,10 +58,9 @@ let g:NERDTreeWinSize = 45
 noremap <leader>i <Esc>:TagbarToggle<CR>
 noremap <leader>o <Esc>:NERDTreeToggle<CR>
 noremap <leader>p <Esc>:CommandT<CR>
-
-nmap _Y :!echo ""> ~/.vi_tmp<CR><CR>:w! ~/.vi_tmp<CR>
-vmap _Y :w! ~/.vi_tmp<CR>
-nmap _P :r ~/.vi_tmp<CR>
+inoremap jk <esc>
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " close vim if NERDTree is the only buffer left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
