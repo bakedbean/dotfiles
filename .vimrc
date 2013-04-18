@@ -29,6 +29,8 @@ set guioptions=em
 set showtabline=2
 set wildmenu
 set wildmode=list:longest,full
+set splitbelow
+set splitright
 
 " colorize whitespace and tab indents, kind of annoying but interesting
 ""highlight LiteralTabs ctermbg=darkblue guibg=darkgreen
