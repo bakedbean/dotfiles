@@ -6,14 +6,15 @@ export PATH="/usr/local/bin:$PATH"
 
 export CLICOLOR=1
 
-function parse_git_branch {
- git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
+source liquidprompt/liquidprompt
+#function parse_git_branch {
+ #git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+#}
 
-case "$TERM" in
-	xterm*|rxvt*)
-	export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}: ${PWD/#$HOME/~}\007"';;*);;
-esac
+#case "$TERM" in
+	#xterm*|rxvt*)
+	#export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}: ${PWD/#$HOME/~}\007"';;*);;
+#esac
 
 # Colors
 LightBlue="$(tput bold ; tput setaf 4)"
@@ -25,7 +26,7 @@ Orange=$'\e[0;33m'
 Grey=$'\e[00;37;40m'
 
 # User specific aliases and functions
-PS1='[\t] \[$Orange\]\u\[$NC\]@\[$LightRed\]\h\[$NC\]$(parse_git_branch)\w]\$ '
+#PS1='[\t] \[$Orange\]\u\[$NC\]@\[$LightRed\]\h\[$NC\]$(parse_git_branch)\w]\$ '
 #PS1='[\t] \[$Orange\]\u\[$NC\]@\[$LightRed\]\h\[$NC\] \w]\$ '
 #PS1="[$(date +%H%M%Z)]\[\033[1;31m\]\[\033[1;36m\][\u\[\033[1;33m\]@\h:\[\033[1;35m\]\w]\[\033[1;37m\]$\[\033[1;37m\]"
 
