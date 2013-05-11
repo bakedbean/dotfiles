@@ -6,6 +6,10 @@ export PATH="/usr/local/bin:$PATH"
 
 export CLICOLOR=1
 
+# Use bash-completion, if available
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
+    . /usr/share/bash-completion/bash_completion
+
 source dotfiles/liquidprompt/liquidprompt
 #function parse_git_branch {
  #git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
