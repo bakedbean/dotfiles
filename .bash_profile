@@ -10,6 +10,11 @@ export CLICOLOR=1
 [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
     . /usr/share/bash-completion/bash_completion
 
+# Use git-completion script if available
+if [ -f ~/dotfiles/.git-completion.bash ]; then
+    . ~/dotfiles/.git-completion.bash
+fi
+
 source dotfiles/liquidprompt/liquidprompt
 #function parse_git_branch {
  #git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
