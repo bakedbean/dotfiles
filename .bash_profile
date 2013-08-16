@@ -1,7 +1,7 @@
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 
 # macports path mod
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+export PATH=/usr/local/sbin:/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:$PATH
 export PATH="/usr/local/bin:$PATH"
 
 export CLICOLOR=1
