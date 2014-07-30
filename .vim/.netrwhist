@@ -1,6 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/Users/eben'
 let g:netrw_dirhist_2='/Users/eben/learnrubythehardway'
 let g:netrw_dirhist_3='/Users/eben'
 let g:netrw_dirhist_4='/Volumes/eben/reports.cci'
+let g:netrw_dirhist_5='/Users/eben/.rvm/gems/ruby-head@scp-api/bundler/gems/devise-6b5988d756d7/app/controllers/devise'

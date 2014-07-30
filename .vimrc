@@ -50,6 +50,14 @@ set mat=2
 set nobackup
 set nowb
 set noswapfile
+set foldmethod=syntax
+set foldlevelstart=20
+set hlsearch
+
+hi Search ctermbg=DarkGray
+hi Search ctermfg=White
+
+let javaScript_fold=1
 
 " Enable indentation matching for =>'s
 filetype plugin indent on
@@ -66,7 +74,8 @@ let g:NERDTreeWinSize = 45
 " key mappings
 noremap <leader>i <Esc>:TagbarToggle<CR>
 noremap <leader>o <Esc>:NERDTreeToggle<CR>
-noremap <leader>p <Esc>:CommandT<CR>
+noremap <leader>p <Esc>:YRShow<CR>
+noremap <leader>[ <Esc>:CommandT<CR>
 inoremap jk <esc>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -83,9 +92,13 @@ inoremap <silent> <Esc> <C-O>:stopinsert<CR>
 map <leader>pp :setlocal paste!<cr>
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 " close vim if NERDTree is the only buffer left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+autocmd Syntax c,cpp,vim,xml,html,xhtml,js,rb setlocal foldmethod=syntax
+autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,rb normal zR
 
 if &grepprg ==# 'grep -n $* /dev/null'
   set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude='*.log'\ --exclude=tags\ $*\ /dev/null
