@@ -72,9 +72,10 @@ let g:tagbar_left = 1
 let g:NERDTreeWinSize = 45
 
 " key mappings
-noremap <leader>i <Esc>:TagbarToggle<CR>
-noremap <leader>o <Esc>:NERDTreeToggle<CR>
-noremap <leader>p <Esc>:YRShow<CR>
+noremap <leader>p <Esc>:TagbarToggle<CR>
+" noremap <leader>o <Esc>:NERDTreeToggle<CR>
+noremap <leader>o <Esc>:NERDTreeTabsToggle<CR>
+noremap <leader>i <Esc>:YRShow<CR>
 noremap <leader>[ <Esc>:CommandT<CR>
 inoremap jk <esc>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
@@ -93,6 +94,33 @@ map <leader>pp :setlocal paste!<cr>
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+nnoremap <silent> <C-S> :<C-u>w<CR>
+imap <C-l> <C-o>l
+imap <C-h> <C-o>h
+
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-s)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap ss <Plug>(easymotion-s2)
+nmap sk <Plug>(easymotion-w)
+nmap sj <Plug>(easymotion-b)
+
+" Turn on case sensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>l <Plug>(easymotion-lineforward)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+map <Leader>h <Plug>(easymotion-linebackward)
+
+let g:EasyMotion_startofline = 0
 
 " close vim if NERDTree is the only buffer left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -189,3 +217,26 @@ function MyTabLine()
   endif
   return s
 endfunction
+
+if &term =~ "xterm\\|rxvt"
+  " use an orange cursor in insert mode
+  let &t_SI = "\<Esc>]12;orange\x7"
+  " use a red cursor otherwise
+  let &t_EI = "\<Esc>]12;red\x7"
+  silent !echo -ne "\033]12;red\007"
+  " reset cursor when vim exits
+  autocmd VimLeave * silent !echo -ne "\033]112\007"
+  " use \003]12;gray\007 for gnome-terminal
+endif
+
+if &term =~ '^xterm'
+  " solid underscore
+  let &t_SI .= "\<Esc>[3 q"
+  " solid block
+  let &t_EI .= "\<Esc>[4 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+  " Recent versions of xterm (282 or above) also support
+  " 5 -> blinking vertical bar
+  " 6 -> solid vertical bar
+endif
