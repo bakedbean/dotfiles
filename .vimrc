@@ -126,6 +126,14 @@ map  N <Plug>(easymotion-prev)
 
 let g:EasyMotion_startofline = 0
 
+set autowrite
+augroup AutoWrite
+  autocmd! BufLeave * :update
+augroup END
+
+autocmd VimEnter * NERDTree
+let NERDTreeShowBookmarks=1
+
 " close vim if NERDTree is the only buffer left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
@@ -188,7 +196,7 @@ function MyTabLine()
       endif
       " no final ' ' added...formatting looks better done later
       if bc > 1
-        let n .= ' '
+        let n .= ' | '
       endif
       let bc -= 1
     endfor
