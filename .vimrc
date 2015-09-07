@@ -19,7 +19,7 @@ set encoding=utf-8
 set scrolloff=5
 
 colorscheme jellybeans
-" jellybean specific overrides
+"" jellybean specific overrides
 hi! LineNr ctermbg=235
 hi! VertSplit ctermfg=236 ctermbg=236
 hi! ColorColumn ctermbg=235
@@ -50,33 +50,28 @@ set mat=2
 set nobackup
 set nowb
 set noswapfile
-set foldmethod=syntax
-set foldlevelstart=20
 set hlsearch
+
+"folding settings
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+set foldlevel=1
 
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White
 
-let javaScript_fold=1
-
 " Enable indentation matching for =>'s
 filetype plugin indent on
 
-" powerline plugin customizations
-let g:Powerline_symbols = 'fancy'
-call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
-let g:Powerline_mode_n = 'N'
-"call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
-
-let g:tagbar_left = 1
-let g:NERDTreeWinSize = 45
-
 " key mappings
 noremap <leader>p <Esc>:TagbarToggle<CR>
-" noremap <leader>o <Esc>:NERDTreeToggle<CR>
+"noremap <leader>o <Esc>:NERDTreeToggle<CR>
 noremap <leader>o <Esc>:NERDTreeTabsToggle<CR>
+nmap ,n :NERDTreeTabsFind<CR>
 noremap <leader>i <Esc>:YRShow<CR>
 noremap <leader>[ <Esc>:CommandT<CR>
+noremap <leader>] <Esc>:MRU<CR>
 inoremap jk <esc>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -97,6 +92,11 @@ nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 nnoremap <silent> <C-S> :<C-u>w<CR>
 imap <C-l> <C-o>l
 imap <C-h> <C-o>h
+
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
 
 " let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -124,18 +124,40 @@ omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
 
+" vim-expand-region mappings
+vmap v <Plug>(expand_region_expand)
+vmap <C-v> <Plug>(expand_region_shrink)
+
 let g:EasyMotion_startofline = 0
+let g:used_javascript_libs = 'angularjs,underscore,jquery,jasmine'
+" allow command-t to browse more files
+let g:CommandTMaxFiles=50000
+
+let NERDTreeShowBookmarks=1
+let NERDTreeMapOpenVSplit='sd'
+let g:nerdtree_tabs_autofind=1
+let g:nerdtree_tabs_open_on_console_startup=1
+let g:NERDTreeWinSize = 45
+
+" powerline plugin customizations
+let g:Powerline_symbols = 'fancy'
+call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
+let g:Powerline_mode_n = 'N'
+"call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
+let g:tagbar_left = 1
+" integrate silver_searcher with ack.vim
+let g:ackprg = 'ag --nogroup --nocolor --column'
+
+" techniques used to manage NERDTree and file focus prior to NERDTreeTabs
+"autocmd BufWinEnter * NERDTreeTabsFind
+"autocmd VimEnter * NERDTree
+" close vim if NERDTree is the only buffer left open
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 set autowrite
 augroup AutoWrite
   autocmd! BufLeave * :update
 augroup END
-
-autocmd VimEnter * NERDTree
-let NERDTreeShowBookmarks=1
-
-" close vim if NERDTree is the only buffer left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 autocmd Syntax c,cpp,vim,xml,html,xhtml,js,rb setlocal foldmethod=syntax
 autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,rb normal zR
@@ -155,7 +177,7 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
-" tabline customizations
+"" tabline customizations
 hi TabLineSel ctermfg=DarkBlue ctermbg=White
 hi TabLine ctermfg=White ctermbg=DarkBlue
 
