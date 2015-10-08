@@ -1,7 +1,11 @@
 require 'rubygems'
 require 'wirble'
+require 'irb/ext/save-history'
+
 Wirble.init
 Wirble.colorize
+
+IRB.conf[:SAVE_HISTORY] = 1000
 
 EMAIL = 'eben.goodman@gmail.com'
 

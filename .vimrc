@@ -53,10 +53,10 @@ set noswapfile
 set hlsearch
 
 "folding settings
-set foldmethod=indent
-set foldnestmax=10
-set nofoldenable
-set foldlevel=1
+"set foldmethod=indent
+"set foldnestmax=10
+"set nofoldenable
+"set foldlevel=1
 
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White
@@ -148,6 +148,9 @@ let g:tagbar_left = 1
 " integrate silver_searcher with ack.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
+let g:DisableAutoPHPFolding = 1
+au FileType php EnableFastPHPFolds
+
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
 "autocmd BufWinEnter * NERDTreeTabsFind
 "autocmd VimEnter * NERDTree
@@ -159,12 +162,12 @@ augroup AutoWrite
   autocmd! BufLeave * :update
 augroup END
 
-autocmd Syntax c,cpp,vim,xml,html,xhtml,js,rb setlocal foldmethod=syntax
-autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,rb normal zR
+"autocmd Syntax c,cpp,vim,xml,html,xhtml,js,rb setlocal foldmethod=syntax
+"autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,rb normal zR
 
-if &grepprg ==# 'grep -n $* /dev/null'
-  set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude='*.log'\ --exclude=tags\ $*\ /dev/null
-endif
+"if &grepprg ==# 'grep -n $* /dev/null'
+  "set grepprg=grep\ -rnH\ --exclude='.*.swp'\ --exclude='*~'\ --exclude='*.log'\ --exclude=tags\ $*\ /dev/null
+"endif
 
 " smarty syntax
 au BufRead,BufNewFile *.tpl set filetype=smarty
@@ -176,6 +179,28 @@ autocmd BufReadPost *
      \ endif
 " Remember info about open buffers on close
 set viminfo^=%
+
+function! MarkWindowSwap()
+    let g:markedWinNum = winnr()
+endfunction
+
+function! DoWindowSwap()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf 
+endfunction
+
+nmap <silent> <leader>mw :call MarkWindowSwap()<CR>
+nmap <silent> <leader>pw :call DoWindowSwap()<CR>
 
 "" tabline customizations
 hi TabLineSel ctermfg=DarkBlue ctermbg=White
