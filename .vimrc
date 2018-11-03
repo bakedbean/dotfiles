@@ -18,12 +18,6 @@ set laststatus=2
 set encoding=utf-8
 set scrolloff=5
 
-colorscheme jellybeans
-"" jellybean specific overrides
-hi! LineNr ctermbg=235
-hi! VertSplit ctermfg=236 ctermbg=236
-hi! ColorColumn ctermbg=235
-
 set number
 set guioptions=em
 set showtabline=2
@@ -31,12 +25,6 @@ set wildmenu
 set wildmode=list:longest,full
 set splitbelow
 set splitright
-
-" colorize whitespace and tab indents, kind of annoying but interesting
-""highlight LiteralTabs ctermbg=darkblue guibg=darkgreen
-""match LiteralTabs /\s\  /
-""highlight ExtraWhitespace ctermbg=darkblue guibg=darkgreen
-""match ExtraWhitespace /\s\+$/
 
 set ruler
 set mouse=a
@@ -51,12 +39,23 @@ set nobackup
 set nowb
 set noswapfile
 set hlsearch
+set pastetoggle=<F2>
 
-"folding settings
-"set foldmethod=indent
-"set foldnestmax=10
-"set nofoldenable
-"set foldlevel=1
+set rtp+=~/.fzf
+
+"if has('folding')
+  "if has('windows')
+    "let &fillchars='vert: '           " less cluttered vertical window separators
+  "endif
+  "set foldmethod=indent               " not as cool as syntax, but faster
+  "set foldlevelstart=99               " start unfolded
+"endif
+
+colorscheme jellybeans
+" jellybean specific overrides
+hi! LineNr ctermbg=235
+hi! VertSplit ctermfg=236 ctermbg=236
+hi! ColorColumn ctermbg=235
 
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White
@@ -70,7 +69,7 @@ noremap <leader>p <Esc>:TagbarToggle<CR>
 noremap <leader>o <Esc>:NERDTreeTabsToggle<CR>
 nmap ,n :NERDTreeTabsFind<CR>
 noremap <leader>i <Esc>:YRShow<CR>
-noremap <leader>[ <Esc>:CommandT<CR>
+noremap <leader>[ <Esc>:FZF<CR>
 noremap <leader>] <Esc>:MRU<CR>
 inoremap jk <esc>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
@@ -123,13 +122,14 @@ map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
+map Q <Nop>
 
 " vim-expand-region mappings
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
 let g:EasyMotion_startofline = 0
-let g:used_javascript_libs = 'angularjs,underscore,jquery,jasmine'
+let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
 " allow command-t to browse more files
 let g:CommandTMaxFiles=50000
 
@@ -139,14 +139,35 @@ let g:nerdtree_tabs_autofind=1
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:NERDTreeWinSize = 45
 
+" airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#tabline#tab_nr_type = 2
+"let g:airline#extensions#tabline#buffer_idx_mode = 1
+let g:airline#extensions#tabline#show_buffers = 1
+
+ let g:airline_mode_map = {
+    \ '__' : '-',
+    \ 'n'  : 'N',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'c'  : 'C',
+    \ 'v'  : 'V',
+    \ 'V'  : 'V',
+    \ 's'  : 'S',
+    \ 'S'  : 'S',
+    \ }
+
 " powerline plugin customizations
-let g:Powerline_symbols = 'fancy'
-call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
-let g:Powerline_mode_n = 'N'
+" let g:Powerline_symbols = 'fancy'
+" call Pl#Theme#ReplaceSegment('lineinfo', 'linesinfo:lineinfo')
+" let g:Powerline_mode_n = 'N'
 "call Pl#Theme#InsertSegment('filesize', 'after', 'fileinfo')
 let g:tagbar_left = 1
 " integrate silver_searcher with ack.vim
 let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:jsx_ext_required = 0
 
 let g:DisableAutoPHPFolding = 1
 au FileType php EnableFastPHPFolds
@@ -156,6 +177,9 @@ au FileType php EnableFastPHPFolds
 "autocmd VimEnter * NERDTree
 " close vim if NERDTree is the only buffer left open
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" turn off tern preview window
+autocmd BufEnter * set completeopt-=preview
 
 set autowrite
 augroup AutoWrite
@@ -206,76 +230,76 @@ nmap <silent> <leader>pw :call DoWindowSwap()<CR>
 hi TabLineSel ctermfg=DarkBlue ctermbg=White
 hi TabLine ctermfg=White ctermbg=DarkBlue
 
-set tabline=%!MyTabLine()  " custom tab pages line
-function MyTabLine()
-  let s = '' " complete tabline goes here
-  " loop through each tab page
-  for t in range(tabpagenr('$'))
-    " set highlight
-    if t + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-    " set the tab page number (for mouse clicks)
-    let s .= '%' . (t + 1) . 'T'
-    let s .= ' '
-    " set page number string
-    let s .= t + 1 . ' '
-    " get buffer names and statuses
-    let n = ''      "temp string for buffer names while we loop and check buftype
-    let m = 0       " &modified counter
-    let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
-    " loop through each buffer in a tab
-    for b in tabpagebuflist(t + 1)
-      " buffer types: quickfix gets a [Q], help gets [H]{base fname}
-      " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
-      if getbufvar( b, "&buftype" ) == 'help'
-        let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
-      elseif getbufvar( b, "&buftype" ) == 'quickfix'
-        let n .= '[Q]'
-      else
-        let n .= pathshorten(bufname(b))
-      endif
-      " check and ++ tab's &modified count
-      if getbufvar( b, "&modified" )
-        let m += 1
-      endif
-      " no final ' ' added...formatting looks better done later
-      if bc > 1
-        let n .= ' | '
-      endif
-      let bc -= 1
-    endfor
-    " add modified label [n+] where n pages in tab are modified
-    if m > 0
-      let s .= '[' . m . '+]'
-    endif
-    " select the highlighting for the buffer names
-    " my default highlighting only underlines the active tab
-    " buffer names.
-    if t + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-    " add buffer names
-    if n == ''
-      let s.= '[New]'
-    else
-      let s .= n
-    endif
-    " switch to no underlining and add final space to buffer list
-    let s .= ' '
-  endfor
-  " after the last tab fill with TabLineFill and reset tab page nr
-  let s .= '%#TabLineFill#%T'
-  " right-align the label to close the current tab page
-  if tabpagenr('$') > 1
-    let s .= '%=%#TabLineFill#%999Xclose'
-  endif
-  return s
-endfunction
+"set tabline=%!MyTabLine()  " custom tab pages line
+"function MyTabLine()
+  "let s = '' " complete tabline goes here
+  "" loop through each tab page
+  "for t in range(tabpagenr('$'))
+    "" set highlight
+    "if t + 1 == tabpagenr()
+      "let s .= '%#TabLineSel#'
+    "else
+      "let s .= '%#TabLine#'
+    "endif
+    "" set the tab page number (for mouse clicks)
+    "let s .= '%' . (t + 1) . 'T'
+    "let s .= ' '
+    "" set page number string
+    "let s .= t + 1 . ' '
+    "" get buffer names and statuses
+    "let n = ''      "temp string for buffer names while we loop and check buftype
+    "let m = 0       " &modified counter
+    "let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
+    "" loop through each buffer in a tab
+    "for b in tabpagebuflist(t + 1)
+      "" buffer types: quickfix gets a [Q], help gets [H]{base fname}
+      "" others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
+      "if getbufvar( b, "&buftype" ) == 'help'
+        "let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
+      "elseif getbufvar( b, "&buftype" ) == 'quickfix'
+        "let n .= '[Q]'
+      "else
+        "let n .= pathshorten(bufname(b))
+      "endif
+      "" check and ++ tab's &modified count
+      "if getbufvar( b, "&modified" )
+        "let m += 1
+      "endif
+      "" no final ' ' added...formatting looks better done later
+      "if bc > 1
+        "let n .= ' | '
+      "endif
+      "let bc -= 1
+    "endfor
+    "" add modified label [n+] where n pages in tab are modified
+    "if m > 0
+      "let s .= '[' . m . '+]'
+    "endif
+    "" select the highlighting for the buffer names
+    "" my default highlighting only underlines the active tab
+    "" buffer names.
+    "if t + 1 == tabpagenr()
+      "let s .= '%#TabLineSel#'
+    "else
+      "let s .= '%#TabLine#'
+    "endif
+    "" add buffer names
+    "if n == ''
+      "let s.= '[New]'
+    "else
+      "let s .= n
+    "endif
+    "" switch to no underlining and add final space to buffer list
+    "let s .= ' '
+  "endfor
+  "" after the last tab fill with TabLineFill and reset tab page nr
+  "let s .= '%#TabLineFill#%T'
+  "" right-align the label to close the current tab page
+  "if tabpagenr('$') > 1
+    "let s .= '%=%#TabLineFill#%999Xclose'
+  "endif
+  "return s
+"endfunction
 
 if &term =~ "xterm\\|rxvt"
   " use an orange cursor in insert mode
