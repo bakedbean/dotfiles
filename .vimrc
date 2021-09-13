@@ -82,7 +82,7 @@ noremap   <Up>     <NOP>
 noremap   <Down>   <NOP>
 noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
-inoremap <silent> <Esc> <C-O>:stopinsert<CR>
+"inoremap <silent> <Esc> <C-O>:stopinsert<CR>
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 " Remove the Windows ^M - when the encodings gets messed up
@@ -135,6 +135,7 @@ let g:CommandTMaxFiles=50000
 
 let NERDTreeShowBookmarks=1
 let NERDTreeMapOpenVSplit='sd'
+let NERDTreeShowHidden=1
 let g:nerdtree_tabs_autofind=1
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:NERDTreeWinSize = 45
@@ -171,6 +172,15 @@ let g:jsx_ext_required = 0
 
 let g:DisableAutoPHPFolding = 1
 au FileType php EnableFastPHPFolds
+
+let g:ascii = [
+          \ '        __',
+          \ '.--.--.|__|.--------.',
+          \ '|  |  ||  ||        |',
+          \ ' \___/ |__||__|__|__|',
+          \ ''
+          \]
+let g:startify_custom_header = ''
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
 "autocmd BufWinEnter * NERDTreeTabsFind
