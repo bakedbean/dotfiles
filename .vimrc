@@ -4,6 +4,8 @@ call pathogen#infect()
 set fo=tcq
 set nocompatible
 set modeline
+set hidden
+set encoding=utf-8
 
 syntax on
 set t_Co=256
@@ -42,6 +44,7 @@ set hlsearch
 set pastetoggle=<F2>
 
 set rtp+=~/.fzf
+set updatetime=100
 
 "if has('folding')
   "if has('windows')
@@ -59,6 +62,10 @@ hi! ColorColumn ctermbg=235
 
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White
+
+hi Normal guibg=NONE ctermbg=NONE
+highlight Directory ctermfg=172
+highlight! link NERDTreeFlags NERDTreeDir
 
 " Enable indentation matching for =>'s
 filetype plugin indent on
@@ -128,6 +135,9 @@ map Q <Nop>
 vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 
+" gitgutter show diff from master
+nmap gd :GitGutterDiffOrig<CR>
+
 let g:EasyMotion_startofline = 0
 let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
 " allow command-t to browse more files
@@ -144,9 +154,31 @@ let g:NERDTreeWinSize = 45
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#show_splits = 1
-let g:airline#extensions#tabline#tab_nr_type = 2
-"let g:airline#extensions#tabline#buffer_idx_mode = 1
-let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#show_tab_nr = 0
+let g:airline#extensions#tabline#show_tab_count = 0
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 0
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline_stl_path_style = 'short'
+" remove the filetype part
+let g:airline_section_y=''
+let g:airline_section_c='%F'
+" remove separators for empty sections
+let g:airline_skip_empty_sections = 1
+let g:airline#extensions#tabline#show_tab_type = 0
+let g:airline#extensions#tabline#show_close_button = 0
+
+" taboo
+let g:taboo_tab_format = " %f%m %U "
+
+" gitgutter
+let g:gitgutter_diff_base = "master"
+
+augroup HITABFILL
+  autocmd!
+  "autocmd User AirlineAfterInit hi airline_tab_right ctermbg=172
+  autocmd User AirlineAfterInit hi airline_tabfill ctermbg=NONE
+augroup END
 
  let g:airline_mode_map = {
     \ '__' : '-',
@@ -181,6 +213,15 @@ let g:ascii = [
           \ ''
           \]
 let g:startify_custom_header = ''
+
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
+let g:closetag_filetypes = 'html,xhtml,phtml,js'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx,js'
+let g:closetag_emptyTags_caseSensitive = 1
+
+" turn off YCM hover hints
+let g:ycm_auto_hover=''
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
 "autocmd BufWinEnter * NERDTreeTabsFind
@@ -239,77 +280,6 @@ nmap <silent> <leader>pw :call DoWindowSwap()<CR>
 "" tabline customizations
 hi TabLineSel ctermfg=DarkBlue ctermbg=White
 hi TabLine ctermfg=White ctermbg=DarkBlue
-
-"set tabline=%!MyTabLine()  " custom tab pages line
-"function MyTabLine()
-  "let s = '' " complete tabline goes here
-  "" loop through each tab page
-  "for t in range(tabpagenr('$'))
-    "" set highlight
-    "if t + 1 == tabpagenr()
-      "let s .= '%#TabLineSel#'
-    "else
-      "let s .= '%#TabLine#'
-    "endif
-    "" set the tab page number (for mouse clicks)
-    "let s .= '%' . (t + 1) . 'T'
-    "let s .= ' '
-    "" set page number string
-    "let s .= t + 1 . ' '
-    "" get buffer names and statuses
-    "let n = ''      "temp string for buffer names while we loop and check buftype
-    "let m = 0       " &modified counter
-    "let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
-    "" loop through each buffer in a tab
-    "for b in tabpagebuflist(t + 1)
-      "" buffer types: quickfix gets a [Q], help gets [H]{base fname}
-      "" others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
-      "if getbufvar( b, "&buftype" ) == 'help'
-        "let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
-      "elseif getbufvar( b, "&buftype" ) == 'quickfix'
-        "let n .= '[Q]'
-      "else
-        "let n .= pathshorten(bufname(b))
-      "endif
-      "" check and ++ tab's &modified count
-      "if getbufvar( b, "&modified" )
-        "let m += 1
-      "endif
-      "" no final ' ' added...formatting looks better done later
-      "if bc > 1
-        "let n .= ' | '
-      "endif
-      "let bc -= 1
-    "endfor
-    "" add modified label [n+] where n pages in tab are modified
-    "if m > 0
-      "let s .= '[' . m . '+]'
-    "endif
-    "" select the highlighting for the buffer names
-    "" my default highlighting only underlines the active tab
-    "" buffer names.
-    "if t + 1 == tabpagenr()
-      "let s .= '%#TabLineSel#'
-    "else
-      "let s .= '%#TabLine#'
-    "endif
-    "" add buffer names
-    "if n == ''
-      "let s.= '[New]'
-    "else
-      "let s .= n
-    "endif
-    "" switch to no underlining and add final space to buffer list
-    "let s .= ' '
-  "endfor
-  "" after the last tab fill with TabLineFill and reset tab page nr
-  "let s .= '%#TabLineFill#%T'
-  "" right-align the label to close the current tab page
-  "if tabpagenr('$') > 1
-    "let s .= '%=%#TabLineFill#%999Xclose'
-  "endif
-  "return s
-"endfunction
 
 if &term =~ "xterm\\|rxvt"
   " use an orange cursor in insert mode
