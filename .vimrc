@@ -138,6 +138,9 @@ vmap <C-v> <Plug>(expand_region_shrink)
 " gitgutter show diff from master
 nmap gd :GitGutterDiffOrig<CR>
 
+nnoremap <C-N> :bnext<CR>
+nnoremap <C-P> :bprev<CR>
+
 let g:EasyMotion_startofline = 0
 let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
 " allow command-t to browse more files
@@ -156,9 +159,10 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#show_splits = 1
 let g:airline#extensions#tabline#show_tab_nr = 0
 let g:airline#extensions#tabline#show_tab_count = 0
-let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#tab_nr_type = 0
 let g:airline#extensions#tabline#buffer_idx_mode = 0
-let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_stl_path_style = 'short'
 " remove the filetype part
 let g:airline_section_y=''
@@ -166,7 +170,7 @@ let g:airline_section_c='%F'
 " remove separators for empty sections
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#tabline#show_tab_type = 0
-let g:airline#extensions#tabline#show_close_button = 0
+let g:airline#extensions#tabline#show_close_button = 1
 
 " taboo
 let g:taboo_tab_format = " %f%m %U "
@@ -225,9 +229,30 @@ let g:ycm_auto_hover=''
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
 "autocmd BufWinEnter * NERDTreeTabsFind
-"autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree | wincmd p
+
+" Change automatically Vim's dir with NERDTree's
+let g:NERDTreeChDirMode = 2 
+let g:NERDTreeMapOpenSplit='$'"
+
+"vim-nerdtree-tabs settings :
+"" Open NERDTree with vim
+let g:nerdtree_tabs_open_on_console_startup=1
+" Open NERDTree in the new tabs
+ let g:nerdtree_tabs_open_on_new_tab=1
+ let g:nerdtree_tabs_meaningful_tab_names=1
+ let g:nerdtree_tabs_toggle=1
+ let g:nerdtree_tabs_autoclose=1
+" " Synchronize NERDTree's tabs
+ let g:nerdtree_tabs_synchronize_view=1
+
 " close vim if NERDTree is the only buffer left open
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" Close the tab if NERDTree is the only window remaining in it.
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+"autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " turn off tern preview window
 autocmd BufEnter * set completeopt-=preview
@@ -245,7 +270,7 @@ augroup END
 "endif
 
 " smarty syntax
-au BufRead,BufNewFile *.tpl set filetype=smarty
+"au BufRead,BufNewFile *.tpl set filetype=smarty
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -285,8 +310,8 @@ if &term =~ "xterm\\|rxvt"
   " use an orange cursor in insert mode
   let &t_SI = "\<Esc>]12;orange\x7"
   " use a red cursor otherwise
-  let &t_EI = "\<Esc>]12;red\x7"
-  silent !echo -ne "\033]12;red\007"
+  let &t_EI = "\<Esc>]12;white\x7"
+  silent !echo -ne "\033]12;white\007"
   " reset cursor when vim exits
   autocmd VimLeave * silent !echo -ne "\033]112\007"
   " use \003]12;gray\007 for gnome-terminal
@@ -294,9 +319,9 @@ endif
 
 if &term =~ '^xterm'
   " solid underscore
-  let &t_SI .= "\<Esc>[3 q"
+  "let &t_SI .= "\<Esc>[4 q"
   " solid block
-  let &t_EI .= "\<Esc>[4 q"
+  let &t_EI .= "\<Esc>[2 q"
   " 1 or 0 -> blinking block
   " 3 -> blinking underscore
   " Recent versions of xterm (282 or above) also support
