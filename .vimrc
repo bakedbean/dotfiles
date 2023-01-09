@@ -73,8 +73,10 @@ filetype plugin indent on
 " key mappings
 noremap <leader>p <Esc>:TagbarToggle<CR>
 "noremap <leader>o <Esc>:NERDTreeToggle<CR>
-noremap <leader>o <Esc>:NERDTreeTabsToggle<CR>
-nmap ,n :NERDTreeTabsFind<CR>
+" Mirror the NERDTree before showing it. This makes it the same on all tabs.
+nnoremap <C-n> :NERDTreeMirror<CR>:NERDTreeFocus<CR>
+"noremap <leader>o <Esc>:NERDTreeTabsToggle<CR>
+"nmap ,n :NERDTreeTabsFind<CR>
 noremap <leader>i <Esc>:YRShow<CR>
 noremap <leader>[ <Esc>:FZF<CR>
 noremap <leader>] <Esc>:MRU<CR>
@@ -140,6 +142,7 @@ nmap gd :GitGutterDiffOrig<CR>
 
 nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
+nnoremap <C-Q> :tabclose<CR>
 
 let g:EasyMotion_startofline = 0
 let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
@@ -152,6 +155,40 @@ let NERDTreeShowHidden=1
 let g:nerdtree_tabs_autofind=1
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:NERDTreeWinSize = 45
+" Change automatically Vim's dir with NERDTree's
+let g:NERDTreeChDirMode = 2 
+let g:NERDTreeMapOpenSplit='$'"
+
+"vim-nerdtree-tabs settings :
+"" Open NERDTree with vim
+let g:nerdtree_tabs_open_on_console_startup=1
+" Open NERDTree in the new tabs
+let g:nerdtree_tabs_open_on_new_tab=1
+let g:nerdtree_tabs_meaningful_tab_names=1
+let g:nerdtree_tabs_toggle=1
+let g:nerdtree_tabs_autoclose=1
+" " Synchronize NERDTree's tabs
+let g:nerdtree_tabs_synchronize_view=1
+
+" techniques used to manage NERDTree and file focus prior to NERDTreeTabs
+"autocmd BufWinEnter * NERDTreeTabsFind
+autocmd VimEnter * NERDTree | wincmd p
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
+
+" close vim if NERDTree is the only buffer left open
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+" Close the tab if NERDTree is the only window remaining in it.
+"autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
+"autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
@@ -226,33 +263,6 @@ let g:closetag_emptyTags_caseSensitive = 1
 
 " turn off YCM hover hints
 let g:ycm_auto_hover=''
-
-" techniques used to manage NERDTree and file focus prior to NERDTreeTabs
-"autocmd BufWinEnter * NERDTreeTabsFind
-autocmd VimEnter * NERDTree | wincmd p
-
-" Change automatically Vim's dir with NERDTree's
-let g:NERDTreeChDirMode = 2 
-let g:NERDTreeMapOpenSplit='$'"
-
-"vim-nerdtree-tabs settings :
-"" Open NERDTree with vim
-let g:nerdtree_tabs_open_on_console_startup=1
-" Open NERDTree in the new tabs
- let g:nerdtree_tabs_open_on_new_tab=1
- let g:nerdtree_tabs_meaningful_tab_names=1
- let g:nerdtree_tabs_toggle=1
- let g:nerdtree_tabs_autoclose=1
-" " Synchronize NERDTree's tabs
- let g:nerdtree_tabs_synchronize_view=1
-
-" close vim if NERDTree is the only buffer left open
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" Close the tab if NERDTree is the only window remaining in it.
-autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-"autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-"     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 " turn off tern preview window
 autocmd BufEnter * set completeopt-=preview
