@@ -71,12 +71,14 @@ highlight! link NERDTreeFlags NERDTreeDir
 filetype plugin indent on
 
 " key mappings
-noremap <leader>p <Esc>:TagbarToggle<CR>
-"noremap <leader>o <Esc>:NERDTreeToggle<CR>
+"noremap <leader>p <Esc>:TagbarToggle<CR>
+noremap <leader>o <Esc>:NERDTreeToggle<CR>
 " Mirror the NERDTree before showing it. This makes it the same on all tabs.
-nnoremap <C-n> :NERDTreeMirror<CR>:NERDTreeFocus<CR>
+"nnoremap <C-n> :NERDTreeMirror<CR>:NERDTreeFocus<CR>
 "noremap <leader>o <Esc>:NERDTreeTabsToggle<CR>
 "nmap ,n :NERDTreeTabsFind<CR>
+noremap <C-m> :NERDTreeFind<CR>
+
 noremap <leader>i <Esc>:YRShow<CR>
 noremap <leader>[ <Esc>:FZF<CR>
 noremap <leader>] <Esc>:MRU<CR>
@@ -152,35 +154,44 @@ let g:CommandTMaxFiles=50000
 let NERDTreeShowBookmarks=1
 let NERDTreeMapOpenVSplit='sd'
 let NERDTreeShowHidden=1
-let g:nerdtree_tabs_autofind=1
-let g:nerdtree_tabs_open_on_console_startup=1
+"let g:nerdtree_tabs_autofind=1
+"let g:nerdtree_tabs_open_on_console_startup=1
 let g:NERDTreeWinSize = 45
 " Change automatically Vim's dir with NERDTree's
-let g:NERDTreeChDirMode = 2 
+"let g:NERDTreeChDirMode = 2 
 let g:NERDTreeMapOpenSplit='$'"
-
-"vim-nerdtree-tabs settings :
-"" Open NERDTree with vim
-let g:nerdtree_tabs_open_on_console_startup=1
-" Open NERDTree in the new tabs
-let g:nerdtree_tabs_open_on_new_tab=1
-let g:nerdtree_tabs_meaningful_tab_names=1
-let g:nerdtree_tabs_toggle=1
-let g:nerdtree_tabs_autoclose=1
-" " Synchronize NERDTree's tabs
-let g:nerdtree_tabs_synchronize_view=1
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
 "autocmd BufWinEnter * NERDTreeTabsFind
 autocmd VimEnter * NERDTree | wincmd p
 
 " Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+"autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
+autocmd BufWinEnter * if getcmdwintype() == '' && &buftype != 'quickfix' | silent! NERDTreeMirror | endif
+
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
-autocmd BufEnter * if &modifiable | NERDTreeFind | wincmd p | endif
+" open Nerdtree to current open file when not opened from Nerdtree
+"autocmd BufEnter * if &modifiable && &buftype != 'quickfix' | NERDTreeFind | wincmd p | endif
+
+" Check if NERDTree is open or active
+function! IsNERDTreeOpen()        
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+    wincmd p
+  endif
+endfunction
+
+" Highlight currently open buffer in NERDTree
+autocmd BufEnter * call SyncTree()
 
 " close vim if NERDTree is the only buffer left open
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
