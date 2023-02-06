@@ -63,7 +63,13 @@ hi! ColorColumn ctermbg=235
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White
 
-hi Normal guibg=NONE ctermbg=NONE
+"hi Normal guibg=NONE ctermbg=NONE
+
+" transparent bg
+autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
+" For Vim<8, replace EndOfBuffer by NonText
+autocmd vimenter * hi EndOfBuffer guibg=NONE ctermbg=NONE
+
 highlight Directory ctermfg=172
 highlight! link NERDTreeFlags NERDTreeDir
 
@@ -158,7 +164,7 @@ let NERDTreeShowHidden=1
 "let g:nerdtree_tabs_open_on_console_startup=1
 let g:NERDTreeWinSize = 45
 " Change automatically Vim's dir with NERDTree's
-"let g:NERDTreeChDirMode = 2 
+let g:NERDTreeChDirMode = 2 
 let g:NERDTreeMapOpenSplit='$'"
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
@@ -192,6 +198,12 @@ endfunction
 
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
+
+function! Find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+
+command! -nargs=1 Ag execute "Ack! <args> " . Find_git_root()
 
 " close vim if NERDTree is the only buffer left open
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
