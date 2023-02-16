@@ -2,19 +2,19 @@ add_newline = false
 command_timeout = 2000
 
 format = """
-[](#FF6B35)\
+[](#5E6572)\
 $os\
 $hostname\
-[](bg:#F7C59F fg:#FF6B35)\
+[](bg:#7D98A1 fg:#5E6572)\
 $directory\
-[](fg:#F7C59F bg:#EFEFD0)\
+[](fg:#7D98A1 bg:#A9B4C2)\
 $git_branch\
 $git_status\
-(bg:#EFEFD0)\
+(bg:#A9B4C2)\
 $git_metrics\
-[](fg:#EFEFD0 bg:#004E89)\
+[](fg:#A9B4C2 bg:#EEF1EF)\
 $nodejs\
-[](fg:#004E89 bg:#1A659E)\
+[](fg:#EEF1EF bg:#1A659E)\
 $ruby\
 [ ](fg:#1A659E)\
 """
@@ -30,7 +30,7 @@ style = "bg:#9A348E"
 disabled = true # Disabled by default
 
 [directory]
-style = "bg:#F7C59F fg:black"
+style = "bg:#7D98A1 fg:black"
 format = "[ $path ]($style)"
 truncate_to_repo = false
 #truncation_length = 3
@@ -47,22 +47,22 @@ truncate_to_repo = false
 
 [git_branch]
 symbol = ""
-style = "bg:#EFEFD0 fg:black"
+style = "bg:#A9B4C2 fg:black"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:#EFEFD0 fg:black"
+style = "bg:#A9B4C2 fg:black"
 format = '[$all_status$ahead_behind ]($style)'
 
 [git_metrics]
-added_style = "bg:#EFEFD0 bold #679436"
-deleted_style = "bg:#EFEFD0 fg:red"
-format = '[+$added]($added_style)[/](bg:bg:#EFEFD0 fg:black)[-$deleted]($deleted_style)[  ]($deleted_style)'
+added_style = "bg:#A9B4C2 bold #679436"
+deleted_style = "bg:#A9B4C2 fg:red"
+format = '[+$added]($added_style)[/](bg:bg:#A9B4C2 fg:black)[-$deleted]($deleted_style)[  ]($deleted_style)'
 disabled = false
 
 [nodejs]
 symbol = ""
-style = "bg:#004E89"
+style = "bg:#EEF1EF fg:black"
 format = '[ $symbol ($version) ]($style)'
 
 [ruby]
@@ -76,7 +76,7 @@ format = "[ $symbol ($version) ]($style)"
 
 [hostname]
 ssh_only = false
-format =  "[$hostname](fg:#FDFEFE bg:#FF6B35)"
+format =  "[$hostname](fg:#FDFEFE bg:#5E6572)"
 disabled = false
 
 [battery]
