@@ -1,23 +1,80 @@
-add_newline = false
+add_newline = true
 command_timeout = 2000
 
 format = """
-[](#FF6B35)\
+[](first)\
 $os\
 $hostname\
-[](bg:#F7C59F fg:#FF6B35)\
+[](bg:second fg:first)\
 $directory\
-[](fg:#F7C59F bg:#EFEFD0)\
+[](fg:second bg:third)\
 $git_branch\
 $git_status\
-(bg:#EFEFD0)\
+(bg:third)\
 $git_metrics\
-[](fg:#EFEFD0 bg:#004E89)\
+[](fg:third bg:fourth)\
 $nodejs\
-[](fg:#004E89 bg:#1A659E)\
+[](fg:fourth bg:fifth)\
 $ruby\
-[ ](fg:#1A659E)\
+[ ](fg:fifth)\
 """
+
+palette = 'saffron'
+
+[palettes.default]
+first = "#FF6B35"
+second = "#F7C59F"
+third = "#EFEFD0"
+fourth = "#004E89"
+fifth = "#1A659E"
+git = "black"
+code = "white"
+directory = "black"
+hostname = "white"
+
+[palettes.pastel]
+first = "#DD6E42"
+second = "#E8DAB2"
+third = "#4F6D7A"
+fourth = "#C0D6DF"
+fifth = "#EAEAEA"
+git = "white"
+code = "black"
+directory = "black"
+hostname = "white"
+
+[palettes.gray]
+first = "#818479"
+second = "#B5CBB7"
+third = "#D2E4C4"
+fourth = "#E4E9B2"
+fifth = "#E7E08B"
+git = "black"
+code = "black"
+directory = "black"
+hostname = "white"
+
+[palettes.saffron]
+first = "#E8C547"
+second = "#30323D"
+third = "#4D5061"
+fourth = "#5C80BC"
+fifth = "#CDD1C4"
+git = "white"
+code = "black"
+directory = "white"
+hostname = "#30323D"
+
+[palettes.purple]
+first = "#3A3042"
+second = "#DB9D47"
+third = "#FF784F"
+fourth = "#FFE19C"
+fifth = "#EDFFD9"
+git = "black"
+code = "black"
+directory = "black"
+hostname = "white"
 
 [aws]
 disabled = false
@@ -30,7 +87,7 @@ style = "bg:#9A348E"
 disabled = true # Disabled by default
 
 [directory]
-style = "bg:#F7C59F fg:black"
+style = "bg:second fg:directory"
 format = "[ $path ]($style)"
 truncate_to_repo = false
 #truncation_length = 3
@@ -50,27 +107,27 @@ truncate_to_repo = false
 
 [git_branch]
 symbol = ""
-style = "bg:#EFEFD0 fg:black"
+style = "bg:third fg:git"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-style = "bg:#EFEFD0 fg:black"
+style = "bg:third fg:git"
 format = '[$all_status$ahead_behind ]($style)'
 
 [git_metrics]
-added_style = "bg:#EFEFD0 bold #679436"
-deleted_style = "bg:#EFEFD0 fg:red"
-format = '[+$added]($added_style)[/](bg:bg:#EFEFD0 fg:black)[-$deleted]($deleted_style)[  ]($deleted_style)'
+added_style = "bg:third bold #679436"
+deleted_style = "bg:third fg:red"
+format = '[+$added]($added_style)[/](bg:third fg:git)[-$deleted]($deleted_style)[  ]($deleted_style)'
 disabled = false
 
 [nodejs]
 symbol = ""
-style = "bg:#004E89"
+style = "bg:fourth fg:code"
 format = '[ $symbol ($version) ]($style)'
 
 [ruby]
 symbol = " "
-style = "bg:#1A659E"
+style = "bg:fifth fg:code"
 format = "[ $symbol ($version) ]($style)"
 
 #[directory]
@@ -79,7 +136,7 @@ format = "[ $symbol ($version) ]($style)"
 
 [hostname]
 ssh_only = false
-format =  "[$hostname](fg:#FDFEFE bg:#FF6B35)"
+format =  "[$hostname](fg:hostname bg:first)"
 disabled = false
 
 [battery]
