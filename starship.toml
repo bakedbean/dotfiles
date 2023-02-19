@@ -2,19 +2,19 @@ add_newline = true
 command_timeout = 2000
 
 format = """
-[](first)\
+[](fg:first)\
 $os\
 $hostname\
 [](bg:second fg:first)\
 $directory\
-[](fg:second bg:third)\
+[](bg:third fg:second)\
 $git_branch\
 $git_status\
 (bg:third)\
 $git_metrics\
-[](fg:third bg:fourth)\
+[](bg:fourth fg:third)\
 $nodejs\
-[](fg:fourth bg:fifth)\
+[](bg:fifth fg:fourth)\
 $ruby\
 [ ](fg:fifth)\
 """
@@ -33,25 +33,25 @@ directory = "black"
 hostname = "white"
 
 [palettes.pastel]
-first = "#DD6E42"
-second = "#E8DAB2"
-third = "#4F6D7A"
-fourth = "#C0D6DF"
-fifth = "#EAEAEA"
-git = "white"
-code = "black"
+first = "#424B54"
+second = "#93A8AC"
+third = "#FFFFFF"
+fourth = "#E2B4BD"
+fifth = "#9B6A6C"
+git = "black"
+code = "white"
 directory = "black"
 hostname = "white"
 
 [palettes.gray]
-first = "#818479"
-second = "#B5CBB7"
-third = "#D2E4C4"
-fourth = "#E4E9B2"
-fifth = "#E7E08B"
-git = "black"
-code = "black"
-directory = "black"
+first = "#84828F"
+second = "#6A687A"
+third = "#536271"
+fourth = "#3E4C5E"
+fifth = "#2C3D55"
+git = "white"
+code = "white"
+directory = "white"
 hostname = "white"
 
 [palettes.saffron]
@@ -65,15 +65,59 @@ code = "black"
 directory = "white"
 hostname = "#30323D"
 
+[palettes.blue]
+first = "#00296B"
+second = "#003F88"
+third = "#00509D"
+fourth = "#FDC500"
+fifth = "#FFD500"
+git = "white"
+code = "black"
+directory = "white"
+hostname = "white"
+
+[palettes.green]
+first = "#CFE1B9"
+second = "#B5C99A"
+third = "#97A97C"
+fourth = "#87986A"
+fifth = "#718355"
+git = "black"
+code = "white"
+directory = "black"
+hostname = "black"
+
 [palettes.purple]
-first = "#3A3042"
-second = "#DB9D47"
-third = "#FF784F"
-fourth = "#FFE19C"
-fifth = "#EDFFD9"
+first = "#2e005d"
+second = "#5c008b"
+third = "#8e008b"
+fourth = "#ff8300"
+fifth = "#ff6200"
+git = "white"
+code = "white"
+directory = "white"
+hostname = "white"
+
+[palettes.orange]
+first = "#572800"
+second = "#ab5100"
+third = "#ff7900"
+fourth = "#ff9637"
+fifth = "#ffb570"
+git = "white"
+code = "black"
+directory = "white"
+hostname = "white"
+
+[palettes.elsa]
+first = "#25283D"
+second = "#8F3985"
+third = "#98DFEA"
+fourth = "#07BEB8"
+fifth = "#EFD9CE"
 git = "black"
 code = "black"
-directory = "black"
+directory = "white"
 hostname = "white"
 
 [aws]
@@ -103,7 +147,8 @@ truncate_to_repo = false
 "creditkey" = "異"
 #"ck-web" = " "
 #"ck-web" = " "
-"ck-web" = " "
+"ck-web" = ""
+"ck-checkout" = ""
 
 [git_branch]
 symbol = ""
@@ -113,11 +158,23 @@ format = '[ $symbol $branch ]($style)'
 [git_status]
 style = "bg:third fg:git"
 format = '[$all_status$ahead_behind ]($style)'
+ahead = ""
+behind = ""
+#up_to_date = " "
+#up_to_date = ""
+#up_to_date = ""
+up_to_date = " "
+#staged = " "
+staged = " "
+diverged = ""
+#modified = "療"
+#modified = "ﬥ "
+modified = ""
 
 [git_metrics]
 added_style = "bg:third bold #679436"
 deleted_style = "bg:third fg:red"
-format = '[+$added]($added_style)[/](bg:third fg:git)[-$deleted]($deleted_style)[  ]($deleted_style)'
+format = '[+$added]($added_style)[/](bg:third fg:git)[-$deleted]($deleted_style)[ ]($deleted_style)'
 disabled = false
 
 [nodejs]
@@ -136,7 +193,11 @@ format = "[ $symbol ($version) ]($style)"
 
 [hostname]
 ssh_only = false
-format =  "[$hostname](fg:hostname bg:first)"
+#format =  "[ $hostname ](fg:hostname bg:first)"
+#format =  "[ $hostname ](fg:hostname bg:first)"
+format =  "[ $hostname ](fg:hostname bg:first)"
+#format =  "[ $hostname ](fg:hostname bg:first)"
+#format =  "[ $hostname ](fg:hostname bg:first)"
 disabled = false
 
 [battery]
