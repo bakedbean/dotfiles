@@ -19,7 +19,7 @@ $ruby\
 [ ](fg:fifth)\
 """
 
-palette = 'saffron'
+palette = 'elsa'
 
 [palettes.default]
 first = "#FF6B35"
@@ -110,15 +110,15 @@ directory = "white"
 hostname = "white"
 
 [palettes.elsa]
-first = "#25283D"
-second = "#8F3985"
-third = "#98DFEA"
-fourth = "#07BEB8"
-fifth = "#EFD9CE"
-git = "black"
-code = "black"
-directory = "white"
-hostname = "white"
+first = "#121212"
+second = "#262626"
+third = "#3a3a3a"
+fourth = "#4e4e4e"
+fifth = "#626262"
+git = "#d75f00"
+code = "#ff8700"
+directory = "#d75f00"
+hostname = "#d75f00"
 
 [aws]
 disabled = false
@@ -172,8 +172,8 @@ diverged = ""
 modified = ""
 
 [git_metrics]
-added_style = "bg:third bold #679436"
-deleted_style = "bg:third fg:red"
+added_style = "bg:third bold #ACE1AF"
+deleted_style = "bg:third fg:#FFA7A4"
 format = '[+$added]($added_style)[/](bg:third fg:git)[-$deleted]($deleted_style)[ ]($deleted_style)'
 disabled = false
 

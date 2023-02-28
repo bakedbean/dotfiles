@@ -18,3 +18,15 @@ def company(id)
   c ||= Company.where(name: /#{id}/i).first
   c
 end
+
+module Audit
+  @find = -> (needle, haystack) {
+    haystack.history_tracks.each { |h|
+      return h.modified[needle] if h.modified[needle] && !h.modified[needle].blank?
+    }
+  }
+
+  def self.search(needle, haystack)
+    haystack.is_a?(Array) ? haystack.map { |h| @find.call(needle, h) } : @find.call(needle, haystack)
+  end
+end

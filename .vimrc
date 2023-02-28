@@ -231,6 +231,7 @@ let g:airline_section_c='%F'
 let g:airline_skip_empty_sections = 1
 let g:airline#extensions#tabline#show_tab_type = 0
 let g:airline#extensions#tabline#show_close_button = 1
+let g:airline_theme='orange'
 
 " taboo
 let g:taboo_tab_format = " %f%m %U "
@@ -276,6 +277,7 @@ let g:ascii = [
           \ ' \___/ |__||__|__|__|',
           \ ''
           \]
+
 let g:startify_custom_header = ''
 
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
