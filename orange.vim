@@ -66,6 +66,7 @@ let s:N1 = [ s:guiWhite , s:gui0B , s:ctermOrange , s:ctermAsh  ]
 let s:N2 = [ s:gui02 , s:gui01 , s:ctermBrightYellow , s:ctermOrange  ]
 let s:N3 = [ s:guiWhite , s:gui01 , s:ctermOrange , s:ctermBlack  ]
 let g:airline#themes#orange#palette.normal = airline#themes#generate_color_map(s:N1, s:N2, s:N3)
+let g:airline#themes#orange#palette.normal_modified = s:modified
 
 " Insert mode
 let s:I1 = [ s:guiWhite , s:gui0E , s:ctermWhite , s:ctermBlood  ]
@@ -79,6 +80,7 @@ let s:V1 = [ s:guiWhite , s:gui08 , s:ctermAsh , s:ctermOrange ]
 let s:V2 = [ s:gui02 , s:gui01 , s:cterm0D , s:ctermAsh  ]
 let s:V3 = [ s:guiWhite , s:gui01 , s:cterm0D , s:ctermBlack  ]
 let g:airline#themes#orange#palette.visual = airline#themes#generate_color_map(s:V1, s:V2, s:V3)
+let g:airline#themes#orange#palette.visual_modified = s:modified
 
 " Replace mode
 let s:R1 = [ s:gui08 , s:gui01 , s:ctermBlood, s:ctermBlack ]
