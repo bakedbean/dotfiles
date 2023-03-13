@@ -43,7 +43,7 @@ set noswapfile
 set hlsearch
 set pastetoggle=<F2>
 
-set rtp+=~/.fzf
+set rtp+=/usr/local/opt/fzf
 set updatetime=100
 
 "if has('folding')
@@ -152,6 +152,9 @@ nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
 nnoremap <C-Q> :tabclose<CR>
 
+nnoremap <C-r> :Rg<CR>
+nnoremap <C-f> :Files<CR>
+
 let g:EasyMotion_startofline = 0
 let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
 " allow command-t to browse more files
@@ -174,7 +177,6 @@ autocmd VimEnter * NERDTree | wincmd p
 " Open the existing NERDTree on each new tab.
 "autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 autocmd BufWinEnter * if getcmdwintype() == '' && &buftype != 'quickfix' | silent! NERDTreeMirror | endif
-
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -199,11 +201,11 @@ endfunction
 " Highlight currently open buffer in NERDTree
 autocmd BufEnter * call SyncTree()
 
-function! Find_git_root()
-  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
-endfunction
+"function! Find_git_root()
+  "return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+"endfunction
 
-command! -nargs=1 Ag execute "Ack! <args> " . Find_git_root()
+"command! -nargs=1 Ag execute "Ack! <args> " . Find_git_root()
 
 " close vim if NERDTree is the only buffer left open
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -284,10 +286,56 @@ let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
 let g:closetag_filetypes = 'html,xhtml,phtml,js'
 let g:closetag_xhtml_filetypes = 'xhtml,jsx,js'
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescriptreact': 'jsxRegion,tsxRegion',
+    \ 'javascriptreact': 'jsxRegion',
+    \ }
 let g:closetag_emptyTags_caseSensitive = 1
 
 " turn off YCM hover hints
 let g:ycm_auto_hover=''
+
+"START COC.VIM
+" Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
+" delays and poor user experience
+set updatetime=300
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+let g:coc_global_extensions = ['coc-solargraph']
+"END COC.VIM
 
 " turn off tern preview window
 autocmd BufEnter * set completeopt-=preview
