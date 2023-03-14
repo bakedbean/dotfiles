@@ -297,6 +297,9 @@ let g:closetag_emptyTags_caseSensitive = 1
 " turn off YCM hover hints
 let g:ycm_auto_hover=''
 
+" vim-js-file-import
+let g:js_file_import_use_fzf = 1
+
 "START COC.VIM
 " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
 " delays and poor user experience
