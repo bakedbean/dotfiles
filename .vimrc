@@ -152,8 +152,8 @@ nnoremap <C-N> :bnext<CR>
 nnoremap <C-P> :bprev<CR>
 nnoremap <C-Q> :tabclose<CR>
 
-nnoremap <C-r> :Rg<CR>
 nnoremap <C-f> :Files<CR>
+nmap ff :Rg<CR>
 
 let g:EasyMotion_startofline = 0
 let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
