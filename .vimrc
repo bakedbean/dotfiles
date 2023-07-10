@@ -170,7 +170,7 @@ let g:CommandTMaxFiles=50000
 "let g:nerdtree_tabs_open_on_console_startup=1
 "let g:NERDTreeWinSize = 45
 " Change automatically Vim's dir with NERDTree's
-"let g:NERDTreeChDirMode = 2 
+"let g:NERDTreeChDirMode = 2
 "let g:NERDTreeMapOpenSplit='$'"
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
@@ -188,7 +188,7 @@ let g:CommandTMaxFiles=50000
 "autocmd BufEnter * if &modifiable && &buftype != 'quickfix' | NERDTreeFind | wincmd p | endif
 
 " Check if NERDTree is open or active
-"function! IsNERDTreeOpen()        
+"function! IsNERDTreeOpen()
   "return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 "endfunction
 
@@ -303,10 +303,13 @@ let g:ycm_auto_hover=''
 " vim-js-file-import
 let g:js_file_import_use_fzf = 1
 
+" signify setup
+let g:signify_number_highlight = 1
+
 "START COC.VIM
 " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
 " delays and poor user experience
-set updatetime=300
+set updatetime=100
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved
@@ -360,6 +363,7 @@ augroup END
 " start coc-explorer when vim starts
 autocmd User CocNvimInit :CocCommand explorer
 
+" start coc-explorer on new tabs
 augroup TabEnterAutoCommand
   autocmd!
   autocmd TabNew * call timer_start(200, { tid -> execute(':CocCommand explorer') })
@@ -402,7 +406,7 @@ function! DoWindowSwap()
     "Switch to dest and shuffle source->dest
     exe curNum . "wincmd w"
     "Hide and open so that we aren't prompted and keep history
-    exe 'hide buf' markedBuf 
+    exe 'hide buf' markedBuf
 endfunction
 
 nmap <silent> <leader>mw :call MarkWindowSwap()<CR>
