@@ -91,6 +91,19 @@ lvim.builtin.lualine.sections.lualine_c = {
   }
 }
 
+lvim.builtin.gitsigns.opts = {
+  signs = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '-' }
+  },
+  signs_staged = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '-' }
+  }
+}
+
 vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
   callback = function(args)
     if vim.fn.expand "%:p" ~= "" then
