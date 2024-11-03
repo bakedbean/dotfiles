@@ -45,6 +45,7 @@ set pastetoggle=<F2>
 
 set rtp+=/usr/local/opt/fzf
 set updatetime=100
+set re=2
 
 "if has('folding')
   "if has('windows')
@@ -59,6 +60,16 @@ colorscheme jellybeans
 hi! LineNr ctermbg=235
 hi! VertSplit ctermfg=236 ctermbg=236
 hi! ColorColumn ctermbg=235
+
+highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+set cursorline
+
+"highlight LineNr ctermfg=grey
+
+hi CursorLineNR cterm=bold ctermfg=166
+augroup CLNRSet
+    autocmd! ColorScheme * hi CursorLineNR cterm=bold
+augroup END
 
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White

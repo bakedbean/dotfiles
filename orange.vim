@@ -58,7 +58,7 @@ let s:ctermBrightYellow = "223"
 let s:ctermDarkRed = "088"
 
 let g:airline#themes#orange#palette = {}
-let s:modified = { 'airline_c': [ '#ffb964', '', 215, 233, '' ] }
+let s:modified = { 'airline_c': [ '#ffb964', '', 05, 233, '' ] }
 
 " Normal mode
 let s:N1 = [ s:guiWhite , s:gui0B , s:ctermOrange , s:ctermAsh  ]
