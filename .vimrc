@@ -45,6 +45,7 @@ set pastetoggle=<F2>
 
 set rtp+=/usr/local/opt/fzf
 set updatetime=100
+set re=2
 
 "if has('folding')
   "if has('windows')
@@ -59,6 +60,16 @@ colorscheme jellybeans
 hi! LineNr ctermbg=235
 hi! VertSplit ctermfg=236 ctermbg=236
 hi! ColorColumn ctermbg=235
+
+highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+set cursorline
+
+"highlight LineNr ctermfg=grey
+
+hi CursorLineNR cterm=bold ctermfg=166
+augroup CLNRSet
+    autocmd! ColorScheme * hi CursorLineNR cterm=bold
+augroup END
 
 hi Search ctermbg=DarkGray
 hi Search ctermfg=White
@@ -155,51 +166,54 @@ nnoremap <C-Q> :tabclose<CR>
 nnoremap <C-f> :Files<CR>
 nmap ff :Rg<CR>
 
+:nmap <space>e <Cmd>CocCommand explorer<CR>
+nmap <Leader>er <Cmd>call CocAction('runCommand', 'explorer.doAction', 'closest', ['reveal:0'], [['relative', 0, 'file']])<CR>
+
 let g:EasyMotion_startofline = 0
 let g:used_javascript_libs = 'angularjs,lo-dash,jquery,jasmine'
 " allow command-t to browse more files
 let g:CommandTMaxFiles=50000
 
-let NERDTreeShowBookmarks=1
-let NERDTreeMapOpenVSplit='sd'
-let NERDTreeShowHidden=1
+"let NERDTreeShowBookmarks=1
+"let NERDTreeMapOpenVSplit='sd'
+"let NERDTreeShowHidden=1
 "let g:nerdtree_tabs_autofind=1
 "let g:nerdtree_tabs_open_on_console_startup=1
-let g:NERDTreeWinSize = 45
+"let g:NERDTreeWinSize = 45
 " Change automatically Vim's dir with NERDTree's
-let g:NERDTreeChDirMode = 2 
-let g:NERDTreeMapOpenSplit='$'"
+"let g:NERDTreeChDirMode = 2
+"let g:NERDTreeMapOpenSplit='$'"
 
 " techniques used to manage NERDTree and file focus prior to NERDTreeTabs
 "autocmd BufWinEnter * NERDTreeTabsFind
-autocmd VimEnter * NERDTree | wincmd p
+"autocmd VimEnter * NERDTree | wincmd p
 
 " Open the existing NERDTree on each new tab.
 "autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
-autocmd BufWinEnter * if getcmdwintype() == '' && &buftype != 'quickfix' | silent! NERDTreeMirror | endif
+"autocmd BufWinEnter * if getcmdwintype() == '' && &buftype != 'quickfix' | silent! NERDTreeMirror | endif
 
 " Exit Vim if NERDTree is the only window remaining in the only tab.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+"autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
 " open Nerdtree to current open file when not opened from Nerdtree
 "autocmd BufEnter * if &modifiable && &buftype != 'quickfix' | NERDTreeFind | wincmd p | endif
 
 " Check if NERDTree is open or active
-function! IsNERDTreeOpen()        
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
+"function! IsNERDTreeOpen()
+  "return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+"endfunction
 
 " Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
 " file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
-  endif
-endfunction
+"function! SyncTree()
+  "if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    "NERDTreeFind
+    "wincmd p
+  "endif
+"endfunction
 
 " Highlight currently open buffer in NERDTree
-autocmd BufEnter * call SyncTree()
+"autocmd BufEnter * call SyncTree()
 
 "function! Find_git_root()
   "return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
@@ -300,10 +314,13 @@ let g:ycm_auto_hover=''
 " vim-js-file-import
 let g:js_file_import_use_fzf = 1
 
+" signify setup
+let g:signify_number_highlight = 1
+
 "START COC.VIM
 " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
 " delays and poor user experience
-set updatetime=300
+set updatetime=100
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved
@@ -348,6 +365,24 @@ augroup AutoWrite
   autocmd! BufLeave * :update
 augroup END
 
+augroup my-glyph-palette
+  autocmd! *
+  autocmd FileType fern call glyph_palette#apply()
+  autocmd FileType nerdtree,startify call glyph_palette#apply()
+augroup END
+
+" start coc-explorer when vim starts
+autocmd User CocNvimInit :CocCommand explorer
+
+" start coc-explorer on new tabs
+augroup TabEnterAutoCommand
+  autocmd!
+  autocmd TabNew * call timer_start(200, { tid -> execute(':CocCommand explorer') })
+augroup END
+
+" kill coc-explorer when closing buffer
+autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
+
 "autocmd Syntax c,cpp,vim,xml,html,xhtml,js,rb setlocal foldmethod=syntax
 "autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,rb normal zR
 
@@ -382,7 +417,7 @@ function! DoWindowSwap()
     "Switch to dest and shuffle source->dest
     exe curNum . "wincmd w"
     "Hide and open so that we aren't prompted and keep history
-    exe 'hide buf' markedBuf 
+    exe 'hide buf' markedBuf
 endfunction
 
 nmap <silent> <leader>mw :call MarkWindowSwap()<CR>
