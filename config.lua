@@ -66,7 +66,95 @@ lvim.plugins = {
       "Extract"
     }
   },
-}
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = {
+      {
+        "JMarkin/nvim-tree.lua-float-preview",
+        lazy = true,
+        -- default
+        opts = {
+            -- Whether the float preview is enabled by default. When set to false, it has to be "toggled" on.
+            toggled_on = false,
+            -- wrap nvimtree commands
+            wrap_nvimtree_commands = true,
+            -- lines for scroll
+            scroll_lines = 20,
+            -- window config
+            window = {
+              style = "minimal",
+              relative = "win",
+              border = "rounded",
+              wrap = false,
+            },
+            mapping = {
+              -- scroll down float buffer
+              down = { "<C-d>" },
+              -- scroll up float buffer
+              up = { "<C-e>", "<C-u>" },
+              -- enable/disable float windows
+              toggle = { "<C-c>" },
+            },
+            -- hooks if return false preview doesn't shown
+            hooks = {
+              pre_open = function(path)
+                local is_showed = require("float-preview.utils").is_showed(path)
+                if is_showed then
+                  return false
+                end
+                -- if file > 5 MB or not text -> not preview
+                local size = require("float-preview.utils").get_size(path)
+                if type(size) ~= "number" then
+                  return false
+                end
+                local is_text = require("float-preview.utils").is_text(path)
+                return size < 5 and is_text
+              end,
+              post_open = function(bufnr)
+                return true
+              end,
+            },
+          },
+        },
+      },
+    },
+  }
+
+lvim.builtin.nvimtree.setup.on_attach = function(bufnr)
+  local api = require("nvim-tree.api")
+  local FloatPreview = require("float-preview")
+
+  FloatPreview.attach_nvimtree(bufnr)
+  local close_wrap = FloatPreview.close_wrap
+
+  local function opts(desc)
+    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+  end
+
+  -- default mappings
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- custom mappings
+  --vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts('Up'))
+  --vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+  -- Add your custom mappings here
+  vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts('Up'))
+  vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+  vim.keymap.set('n', 'l', api.node.open.edit, opts('Open'))
+  vim.keymap.set('n', 'h', api.node.navigate.parent_close, opts('Close Directory'))
+  vim.keymap.set('n', 'v', api.node.open.vertical, opts('Open: Vertical Split'))
+
+  vim.keymap.set("n", "<C-t>", close_wrap(api.node.open.tab), opts("Open: New Tab"))
+  vim.keymap.set("n", "<C-v>", close_wrap(api.node.open.vertical), opts("Open: Vertical Split"))
+  vim.keymap.set("n", "<C-s>", close_wrap(api.node.open.horizontal), opts("Open: Horizontal Split"))
+  vim.keymap.set("n", "<CR>", close_wrap(api.node.open.edit), opts("Open"))
+  vim.keymap.set("n", "<Tab>", close_wrap(api.node.open.preview), opts("Open"))
+  vim.keymap.set("n", "o", close_wrap(api.node.open.edit), opts("Open"))
+  vim.keymap.set("n", "O", close_wrap(api.node.open.no_window_picker), opts("Open: No Window Picker"))
+  vim.keymap.set("n", "a", close_wrap(api.fs.create), opts("Create"))
+  vim.keymap.set("n", "d", close_wrap(api.fs.remove), opts("Delete"))
+  vim.keymap.set("n", "r", close_wrap(api.fs.rename), opts("Rename"))
+end
 
 lvim.transparent_window = true
 lvim.builtin.lualine.options.theme = "nord"
@@ -97,11 +185,34 @@ lvim.builtin.gitsigns.opts = {
     change = { text = '~' },
     delete = { text = '-' }
   },
-  signs_staged = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '-' }
-  }
+}
+
+lvim.builtin.telescope.defaults.layout_strategy = 'vertical'
+lvim.builtin.telescope.pickers = {
+  find_files = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+      preview_height = 0.7,
+    },
+  },
+  git_files = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+  grep_string = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+  live_grep = {
+    layout_config = {
+      width = 0.95,
+    },
+  },
 }
 
 vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
