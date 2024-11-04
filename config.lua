@@ -163,6 +163,7 @@ lvim.colorscheme = "nordic"
 lvim.keys.insert_mode["jk"] = "<Esc>"
 lvim.keys.insert_mode["<C-l>"] = "<C-o>l"
 lvim.keys.insert_mode["<C-h>"] = "<C-o>h"
+lvim.keys.normal_mode["gv"] = ":vert winc ]<CR>"
 
 local mode_map = {
   ['NORMAL'] = '',
