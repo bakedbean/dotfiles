@@ -164,7 +164,27 @@ lvim.keys.insert_mode["jk"] = "<Esc>"
 lvim.keys.insert_mode["<C-l>"] = "<C-o>l"
 lvim.keys.insert_mode["<C-h>"] = "<C-o>h"
 
-lvim.builtin.lualine.sections.lualine_a = { "mode" }
+local mode_map = {
+  ['NORMAL'] = '',
+  ['O-PENDING'] = 'N?',
+  ['INSERT'] = '',
+  ['VISUAL'] = '',
+  ['V-BLOCK'] = 'VB',
+  ['V-LINE'] = 'VL',
+  ['V-REPLACE'] = 'VR',
+  ['REPLACE'] = 'R',
+  ['COMMAND'] = '!',
+  ['SHELL'] = 'SH',
+  ['TERMINAL'] = 'T',
+  ['EX'] = 'X',
+  ['S-BLOCK'] = 'SB',
+  ['S-LINE'] = 'SL',
+  ['SELECT'] = 'S',
+  ['CONFIRM'] = 'Y?',
+  ['MORE'] = 'M',
+}
+
+lvim.builtin.lualine.sections.lualine_a = { {'mode', fmt = function(s) return mode_map[s] or s end} }
 lvim.builtin.lualine.sections.lualine_b = { "branch", "diff"}
 lvim.builtin.lualine.options = {
   icons_enabled = true,
