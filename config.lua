@@ -232,6 +232,7 @@ lvim.builtin.telescope.pickers = {
   live_grep = {
     layout_config = {
       width = 0.95,
+      height = 0.95,
     },
   },
 }
@@ -256,6 +257,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end
 })
+
+local function open_nvim_tree()
+  require("nvim-tree.api").tree.open()
+end
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
 local colors = {
   color2 = "#0f1419",
