@@ -12,6 +12,15 @@ lvim.plugins = {
   { "fenetikm/falcon" },
   { "fcancelinha/nordern.nvim" },
   { "metalelf0/jellybeans-nvim" },
+  { "marko-cerovac/material.nvim" },
+  { "rose-pine/neovim" },
+  { "mcchrish/zenbones.nvim" },
+  { "mhartington/oceanic-next" },
+  { "kvrohit/rasmus.nvim" },
+  { "sho-87/kanagawa-paper.nvim" },
+  { "metalelf0/jellybeans-nvim" },
+  { "adisen99/codeschool.nvim" },
+  { "rktjmp/lush.nvim" },
   {
     "windwp/nvim-ts-autotag",
     config = function ()
@@ -74,6 +83,9 @@ lvim.plugins = {
         lazy = true,
         -- default
         opts = {
+            update_focused_file = {
+              enable = true,
+            },
             -- Whether the float preview is enabled by default. When set to false, it has to be "toggled" on.
             toggled_on = false,
             -- wrap nvimtree commands
@@ -120,6 +132,83 @@ lvim.plugins = {
     },
   }
 
+-- colors
+lvim.transparent_window = true
+lvim.builtin.lualine.options.theme = "nord"
+lvim.colorscheme = "aurora"
+
+-- custom key maps
+lvim.keys.insert_mode["jk"] = "<Esc>"
+lvim.keys.insert_mode["<C-l>"] = "<C-o>l"
+lvim.keys.insert_mode["<C-h>"] = "<C-o>h"
+lvim.keys.normal_mode["gv"] = ":vert winc ]<CR>"
+lvim.keys.normal_mode["<C-q>"] = ":Close<CR>"
+
+-- modify git signs in gutter
+lvim.builtin.gitsigns.opts = {
+  signs = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '-' }
+  },
+}
+
+-- increase size of file and text search floating windows
+lvim.builtin.telescope.defaults.layout_strategy = 'vertical'
+lvim.builtin.telescope.pickers = {
+  find_files = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+      preview_height = 0.7,
+    },
+  },
+  git_files = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+  grep_string = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+  live_grep = {
+    layout_config = {
+      width = 0.95,
+      height = 0.95,
+    },
+  },
+}
+
+-- START nvim-tree customizations
+-- setup to use nvim-tree like a normal IDE
+-- auto open on vim start
+-- auto open on new buffers
+-- close all buffers with :Close
+vim.api.nvim_create_autocmd("BufEnter", {
+  nested = true,
+  callback = function()
+    if #vim.api.nvim_list_wins() == 1 and require("nvim-tree.utils").is_nvim_tree_buf() then
+      vim.cmd "quit"
+    end
+  end
+})
+
+local function open_nvim_tree()
+  require("nvim-tree.api").tree.open()
+end
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+vim.api.nvim_create_autocmd({ "BufRead" }, { callback = open_nvim_tree })
+
+vim.api.nvim_create_user_command('CloseBuffer', function()
+  vim.cmd('NvimTreeClose')
+  vim.cmd('bdelete')
+end, { desc = 'Close buffer and NvimTree if open' })
+
+-- allow toggling preview in float from nvim-tree
 lvim.builtin.nvimtree.setup.on_attach = function(bufnr)
   local api = require("nvim-tree.api")
   local FloatPreview = require("float-preview")
@@ -139,6 +228,7 @@ lvim.builtin.nvimtree.setup.on_attach = function(bufnr)
   --vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
   -- Add your custom mappings here
   vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts('Up'))
+  vim.keymap.set('n', '<C-e>', api.node.open.replace_tree_buffer, opts('Open: In Place'))
   vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
   vim.keymap.set('n', 'l', api.node.open.edit, opts('Open'))
   vim.keymap.set('n', 'h', api.node.navigate.parent_close, opts('Close Directory'))
@@ -155,15 +245,20 @@ lvim.builtin.nvimtree.setup.on_attach = function(bufnr)
   vim.keymap.set("n", "d", close_wrap(api.fs.remove), opts("Delete"))
   vim.keymap.set("n", "r", close_wrap(api.fs.rename), opts("Rename"))
 end
+-- END nvim-tree customizations
 
-lvim.transparent_window = true
-lvim.builtin.lualine.options.theme = "nord"
-lvim.colorscheme = "nordic"
-
-lvim.keys.insert_mode["jk"] = "<Esc>"
-lvim.keys.insert_mode["<C-l>"] = "<C-o>l"
-lvim.keys.insert_mode["<C-h>"] = "<C-o>h"
-lvim.keys.normal_mode["gv"] = ":vert winc ]<CR>"
+-- START lualine customizations
+local colors = {
+  color2 = "#0f1419",
+  color3 = "#ffee99",
+  color4 = "#e6e1cf",
+  color5 = "#14191f",
+  color13 = "#ff6600",
+  color10 = "#FFA500",
+  color8 = "#f07178",
+  color9 = "#FFA500",
+  none = "none",
+}
 
 local mode_map = {
   ['NORMAL'] = '',
@@ -200,81 +295,6 @@ lvim.builtin.lualine.sections.lualine_c = {
   }
 }
 
-lvim.builtin.gitsigns.opts = {
-  signs = {
-    add = { text = '+' },
-    change = { text = '~' },
-    delete = { text = '-' }
-  },
-}
-
-lvim.builtin.telescope.defaults.layout_strategy = 'vertical'
-lvim.builtin.telescope.pickers = {
-  find_files = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-      preview_height = 0.7,
-    },
-  },
-  git_files = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-    },
-  },
-  grep_string = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-    },
-  },
-  live_grep = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-    },
-  },
-}
-
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPost"}, {
-  callback = function(args)
-    if vim.fn.expand "%:p" ~= "" then
-      vim.api.nvim_del_autocmd(args.id)
-      vim.cmd "noautocmd NvimTreeOpen"
-      vim.schedule(function()
-        vim.cmd "wincmd p"
-      end)
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("BufEnter", {
-  nested = true,
-  callback = function()
-    if #vim.api.nvim_list_wins() == 1 and require("nvim-tree.utils").is_nvim_tree_buf() then
-      vim.cmd "quit"
-    end
-  end
-})
-
-local function open_nvim_tree()
-  require("nvim-tree.api").tree.open()
-end
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-
-local colors = {
-  color2 = "#0f1419",
-  color3 = "#ffee99",
-  color4 = "#e6e1cf",
-  color5 = "#14191f",
-  color13 = "#ff6600",
-  color10 = "#FFA500",
-  color8 = "#f07178",
-  color9 = "#FFA500",
-  none = "none",
-}
-
 lvim.builtin.lualine.options.theme = {
   normal = {
     c = { fg = colors.color9, bg = colors.color2 },
@@ -299,3 +319,4 @@ lvim.builtin.lualine.options.theme = {
     b = { fg = colors.color4, bg = colors.none },
   },
 }
+-- END lualine customizations
