@@ -206,6 +206,7 @@ vim.api.nvim_create_autocmd({ "BufRead" }, { callback = open_nvim_tree })
 vim.api.nvim_create_user_command('CloseBuffer', function()
   vim.cmd('NvimTreeClose')
   vim.cmd('bdelete')
+  vim.cmd('NvimTreeOpen')
 end, { desc = 'Close buffer and NvimTree if open' })
 
 -- allow toggling preview in float from nvim-tree
@@ -245,6 +246,8 @@ lvim.builtin.nvimtree.setup.on_attach = function(bufnr)
   vim.keymap.set("n", "d", close_wrap(api.fs.remove), opts("Delete"))
   vim.keymap.set("n", "r", close_wrap(api.fs.rename), opts("Rename"))
 end
+
+lvim.builtin.nvimtree.setup.view.adaptive_size = true
 -- END nvim-tree customizations
 
 -- START lualine customizations
