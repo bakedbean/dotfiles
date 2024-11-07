@@ -21,6 +21,7 @@ lvim.plugins = {
   { "metalelf0/jellybeans-nvim" },
   { "adisen99/codeschool.nvim" },
   { "rktjmp/lush.nvim" },
+  { "hiphish/rainbow-delimiters.nvim" },
   {
     "windwp/nvim-ts-autotag",
     config = function ()
@@ -181,6 +182,13 @@ lvim.builtin.telescope.pickers = {
       height = 0.95,
     },
   },
+}
+
+--lvim.builtin.bufferline.options.mode = "tabs"
+lvim.builtin.bufferline.options.highlights = {
+  tab = {
+    fg = "#0f1419"
+  }
 }
 
 -- START nvim-tree customizations
