@@ -145,6 +145,16 @@ lvim.keys.insert_mode["<C-h>"] = "<C-o>h"
 lvim.keys.normal_mode["gv"] = ":vert winc ]<CR>"
 lvim.keys.normal_mode["<C-q>"] = ":Close<CR>"
 
+vim.cmd('autocmd FileType ruby setlocal indentkeys-=.')
+
+vim.diagnostic.config({
+  virtual_text = false
+})
+
+-- Show line diagnostics automatically in hover window
+vim.o.updatetime = 250
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
 -- modify git signs in gutter
 lvim.builtin.gitsigns.opts = {
   signs = {
