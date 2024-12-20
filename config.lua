@@ -164,33 +164,33 @@ lvim.builtin.gitsigns.opts = {
   },
 }
 
--- increase size of file and text search floating windows
 lvim.builtin.telescope.defaults.layout_strategy = 'vertical'
-lvim.builtin.telescope.pickers = {
-  find_files = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-      preview_height = 0.7,
-    },
+-- increase size of file and text search floating windows
+lvim.builtin.telescope.defaults.layout_config = {
+  -- prompt_position = "top",
+  height = 0.9,
+  width = 0.9,
+  bottom_pane = {
+    height = 25,
+    preview_cutoff = 120,
   },
-  git_files = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-    },
+  center = {
+    height = 0.4,
+    preview_cutoff = 40,
+    width = 0.5,
   },
-  grep_string = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-    },
+  cursor = {
+    preview_cutoff = 40,
   },
-  live_grep = {
-    layout_config = {
-      width = 0.95,
-      height = 0.95,
-    },
+  horizontal = {
+    preview_cutoff = 120,
+    preview_width = 0.6,
+  },
+  vertical = {
+    preview_cutoff = 40,
+  },
+  flex = {
+    flip_columns = 150,
   },
 }
 
