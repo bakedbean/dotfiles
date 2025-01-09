@@ -14,8 +14,8 @@ $git_status\
 $git_metrics\
 [](bg:fourth fg:third)\
 $nodejs\
-[](bg:fifth fg:fourth)\
 $ruby\
+$python\
 [ ](fg:fifth)\
 """
 
@@ -185,6 +185,12 @@ format = '[ $symbol ($version) ]($style)'
 symbol = " "
 style = "bg:fifth fg:code"
 format = "[ $symbol ($version) ]($style)"
+
+[python]
+symbol = '👾 '
+style = "bg:fourth fg:code"
+format = '[ $symbol ($version $virtualenv) ]($style)'
+#pyenv_version_name = true
 
 #[directory]
 #truncate_to_repo = false
