@@ -162,6 +162,8 @@ vim.diagnostic.config({
 -- Show line diagnostics automatically in hover window
 vim.o.updatetime = 250
 vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+-- Prepend mise shims to PATH
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
 -- modify git signs in gutter
 lvim.builtin.gitsigns.opts = {
@@ -208,6 +210,7 @@ lvim.builtin.bufferline.options.highlights = {
     fg = "#0f1419"
   }
 }
+lvim.builtin.treesitter.indent.disable = {"yaml"}
 
 -- START nvim-tree customizations
 -- setup to use nvim-tree like a normal IDE
