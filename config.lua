@@ -131,6 +131,14 @@ lvim.plugins = {
         },
       },
     },
+    {
+      "dlants/magenta.nvim",
+      lazy = false, -- you could also bind to <leader>mt
+      build = "bun install --frozen-lockfile",
+      config = function()
+        require('magenta').setup()
+      end
+    },
   }
 
 -- colors
