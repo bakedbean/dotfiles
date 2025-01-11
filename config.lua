@@ -161,7 +161,20 @@ vim.diagnostic.config({
 
 -- Show line diagnostics automatically in hover window
 vim.o.updatetime = 250
-vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+--vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+    if #diagnostics > 0 then
+      local message = diagnostics[1].message
+      vim.cmd.echomsg(string.format('"%s"', message))
+    else
+      vim.cmd.echo('""')  -- Clear the message when no diagnostics
+    end
+  end
+})
+
 -- Prepend mise shims to PATH
 vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
