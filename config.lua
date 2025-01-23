@@ -161,9 +161,9 @@ lvim.plugins = {
               command = {"zsh"}
             },
             python = {
-              command = { "python3" },  -- or { "ipython", "--no-autoindent" }
+              command = { "ipython", "--no-autoindent" },
               format = require("iron.fts.common").bracketed_paste_python
-            }
+            },
           },
           -- How the repl window will be displayed
           -- See below for more information
