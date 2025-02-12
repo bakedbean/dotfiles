@@ -38,13 +38,11 @@ lvim.plugins = {
     end,
   },
   {
-    'wfxr/minimap.vim',
-    build = "cargo install --locked code-minimap",
-    -- cmd = {"Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight"},
-    config = function ()
-      vim.cmd ("let g:minimap_width = 20")
-      vim.cmd ("let g:minimap_auto_start = 0")
-      vim.cmd ("let g:minimap_auto_start_win_enter = 0")
+    'gorbit99/codewindow.nvim',
+    config = function()
+      local codewindow = require('codewindow')
+      codewindow.setup()
+      codewindow.apply_default_keybinds()
     end,
   },
   {
@@ -135,7 +133,9 @@ lvim.plugins = {
       "dlants/magenta.nvim",
       lazy = false, -- you could also bind to <leader>mt
       build = "npm install --frozen-lockfile",
-      opts = {},
+      opts = {
+        sidebar_position = "right",
+      },
     },
     {
       "ibhagwan/fzf-lua",
@@ -164,6 +164,12 @@ lvim.plugins = {
             },
             ruby = {
               command = {"rails", "console"}
+            },
+            node = {
+              command = {"node"}
+            },
+            typescript = {
+              command = { "ts-node" }
             },
           },
           -- How the repl window will be displayed
