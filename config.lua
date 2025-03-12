@@ -247,7 +247,12 @@ lvim.plugins = {
       }
       end
     },
+    {
+      "augmentcode/augment.vim"
+    }
   }
+
+vim.g.augment_workspace_folders = {'/Users/eben/Rails'}
 
 vim.keymap.set('n', '<space>rs', '<cmd>IronRepl<cr>')
 vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
