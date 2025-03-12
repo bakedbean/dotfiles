@@ -138,6 +138,48 @@ lvim.plugins = {
       },
     },
     {
+      "olimorris/codecompanion.nvim",
+      config = function()
+        require("codecompanion").setup({
+          strategies = {
+            chat = {
+              adapter = "anthropic",
+              tools = {
+                ["mcp"] = {
+                  callback = require("mcphub.extensions.codecompanion"),
+                  description = "Call tools and resources for the MCP servers",
+                  opts = {
+                    requires_approval = true,
+                  }
+                }
+              },
+            },
+            inline = {
+              adapter = "anthropic",
+            },
+          },
+        })
+      end,
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "ravitemer/mcphub.nvim",
+      },
+    },
+    {
+      "ravitemer/mcphub.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+      },
+      build = "npm install -g mcp-hub@latest",
+      config = function()
+        require("mcphub").setup({
+          port = 3000,
+          config = vim.fn.expand("~/mcpservers.json"),
+        })
+      end
+    },
+    {
       "ibhagwan/fzf-lua",
       -- optional for icon support
       dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -215,6 +257,7 @@ vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 -- colors
 lvim.transparent_window = true
 lvim.builtin.lualine.options.theme = "nord"
+lvim.builtin.project.manual_mode = true
 lvim.colorscheme = "aurora"
 
 -- custom key maps
