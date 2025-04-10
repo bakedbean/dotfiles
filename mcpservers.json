@@ -1,13 +1,11 @@
 {
   "mcpServers": {
     "postgres": {
-      "command": "docker",
+      "command": "bunx",
       "args": [
-        "run", 
-        "-i", 
-        "--rm", 
-        "mcp/postgres", 
-        "postgresql://postgres:postgres@host.docker.internal:5432/dev"]
+        "-y", 
+        "@modelcontextprotocol/server-postgres", 
+        "postgresql://postgres:postgres@localhost:5432/dev"]
     }
   }
 }
