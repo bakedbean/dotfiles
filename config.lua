@@ -143,7 +143,7 @@ lvim.plugins = {
         require("codecompanion").setup({
           strategies = {
             chat = {
-              adapter = "anthropic",
+              adapter = "gemini",
               tools = {
                 ["mcp"] = {
                   callback = require("mcphub.extensions.codecompanion"),
@@ -155,7 +155,7 @@ lvim.plugins = {
               },
             },
             inline = {
-              adapter = "anthropic",
+              adapter = "gemini",
             },
           },
         })
@@ -246,18 +246,20 @@ lvim.plugins = {
         ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
       }
       end
-    },
-    {
-      "augmentcode/augment.vim"
     }
   }
-
-vim.g.augment_workspace_folders = {'/Users/eben/Rails'}
 
 vim.keymap.set('n', '<space>rs', '<cmd>IronRepl<cr>')
 vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
 vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
 vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
+
+vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<space>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])
 
 -- colors
 lvim.transparent_window = true
@@ -293,9 +295,6 @@ vim.cmd [[autocmd CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {f
 --     end
 --   end
 -- })
-
--- Prepend mise shims to PATH
-vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
 -- modify git signs in gutter
 lvim.builtin.gitsigns.opts = {
