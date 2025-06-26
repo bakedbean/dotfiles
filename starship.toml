@@ -17,6 +17,7 @@ $nodejs\
 $ruby\
 $python\
 [ ](fg:fifth)\
+$custom\
 """
 
 palette = 'elsa'
@@ -215,3 +216,10 @@ disabled = false
 time_format = "%R" # Hour:Minute Format
 style = "bg:#34495E"
 format = '[ 鬒 $time ]($style)'
+
+[custom.pg_database]
+command = "echo \"$PGDATABASE\""                  # The command to execute
+when = '[[ -n "$PGDATABASE" ]]'                   # Display only if the variable is not empty
+format = ' [$output]($style) '                # How the output will be displayed
+style = "bold #ffa74a"                              # The style (color and emphasis) of the output
+description = "Displays the value of PG_DATABASE" # Optional description

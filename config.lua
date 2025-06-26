@@ -23,6 +23,10 @@ lvim.plugins = {
   { "rktjmp/lush.nvim" },
   { "hiphish/rainbow-delimiters.nvim" },
   {
+    "lukas-reineke/indent-blankline.nvim",
+    enabled = false,
+  },
+  {
     "windwp/nvim-ts-autotag",
     config = function ()
       require("nvim-ts-autotag").setup()
@@ -35,14 +39,6 @@ lvim.plugins = {
       require("hop").setup()
       vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
       vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
-    end,
-  },
-  {
-    'gorbit99/codewindow.nvim',
-    config = function()
-      local codewindow = require('codewindow')
-      codewindow.setup()
-      codewindow.apply_default_keybinds()
     end,
   },
   {
@@ -134,44 +130,50 @@ lvim.plugins = {
       lazy = false, -- you could also bind to <leader>mt
       build = "npm install --frozen-lockfile",
       opts = {
-        sidebar_position = "right",
+        sidebarPosition = "right",
       },
     },
-    {
-      "olimorris/codecompanion.nvim",
-      config = function()
-        require("codecompanion").setup({
-          strategies = {
-            chat = {
-              adapter = "gemini",
-              tools = {
-                ["mcp"] = {
-                  callback = require("mcphub.extensions.codecompanion"),
-                  description = "Call tools and resources for the MCP servers",
-                  opts = {
-                    requires_approval = true,
-                  }
-                }
-              },
-            },
-            inline = {
-              adapter = "gemini",
-            },
-          },
-        })
-      end,
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-        "ravitemer/mcphub.nvim",
-      },
-    },
+    -- {
+    --   "olimorris/codecompanion.nvim",
+    --   config = function()
+    --     require("codecompanion").setup({
+    --       strategies = {
+    --         chat = {
+    --           adapter = "gemini",
+    --           tools = {
+    --             ["mcp"] = {
+    --               callback = require("mcphub.extensions.codecompanion"),
+    --               description = "Call tools and resources for the MCP servers",
+    --               opts = {
+    --                 requires_approval = true,
+    --               }
+    --             }
+    --           },
+    --         },
+    --         inline = {
+    --           adapter = "gemini",
+    --         },
+    --       },
+    --     })
+    --   end,
+    --   dependencies = {
+    --     "nvim-lua/plenary.nvim",
+    --     "nvim-treesitter/nvim-treesitter",
+    --     "ravitemer/mcphub.nvim",
+    --   },
+    -- },
     {
       "ravitemer/mcphub.nvim",
       dependencies = {
         "nvim-lua/plenary.nvim",
       },
+      auto_approve = true,
       build = "npm install -g mcp-hub@latest",
+      extensions = {
+        avante = {
+          make_slash_commands = true, -- make /slash commands from MCP server prompts
+        }
+      },
       config = function()
         require("mcphub").setup({
           port = 3000,
@@ -254,12 +256,12 @@ vim.keymap.set('n', '<space>rr', '<cmd>IronRestart<cr>')
 vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
 vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
-vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<space>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "<space>a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
+-- vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
 
--- Expand 'cc' into 'CodeCompanion' in the command line
-vim.cmd([[cab cc CodeCompanion]])
+-- -- Expand 'cc' into 'CodeCompanion' in the command line
+-- vim.cmd([[cab cc CodeCompanion]])
 
 -- colors
 lvim.transparent_window = true
