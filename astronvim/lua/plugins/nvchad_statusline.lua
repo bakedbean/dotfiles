@@ -113,16 +113,29 @@ return {
         -- fill the rest of the statusline
         -- the elements after this will appear in the middle of the statusline
         status.component.fill(),
-        -- add a component to display if the LSP is loading, disable showing running client names, and use no separator
-        status.component.lsp {
-          lsp_client_names = false,
-          surround = { separator = "none", color = "bg" },
-        },
         -- fill the rest of the statusline
         -- the elements after this will appear on the right of the statusline
         status.component.fill(),
         -- add a component for the current diagnostics if it exists and use the right separator for the section
         status.component.diagnostics { surround = { separator = "right" } },
+        -- add a component to display virtual environment if available
+        status.component.builder {
+          {
+            provider = function()
+              local venv = vim.env.VIRTUAL_ENV or vim.env.CONDA_DEFAULT_ENV
+              if venv then
+                local venv_name = vim.fn.fnamemodify(venv, ":t")
+                return " " .. venv_name
+              end
+              return ""
+            end,
+            condition = function()
+              return vim.env.VIRTUAL_ENV or vim.env.CONDA_DEFAULT_ENV
+            end,
+          },
+          hl = { fg = "fg", bg = "bg" },
+          surround = { separator = "none" },
+        },
         -- add a component to display LSP clients, disable showing LSP progress, and use the right separator
         status.component.lsp {
           lsp_progress = false,
