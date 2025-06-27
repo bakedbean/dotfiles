@@ -8,9 +8,9 @@ return {
         VimIcon = "",
         ScrollText = "",
         GitBranch = "",
-        GitAdd = "",
-        GitChange = "",
-        GitDelete = "",
+        GitAdd = "+",
+        GitChange = "~",
+        GitDelete = "-",
       },
       -- modify variables used by heirline but not defined in the setup call directly
       status = {
@@ -88,17 +88,38 @@ return {
             color = { main = "blank_bg", right = "file_info_bg" },
           },
         },
-        -- add a section for the currently opened file information
+        -- add a section for the currently opened file information with full path
         status.component.file_info {
           -- enable the file_icon and disable the highlighting based on filetype
-          filename = { fallback = "Empty" },
-          -- disable some of the info
+          filename = {
+            fallback = "[No Name]",
+            modify = ":.",  -- Show path relative to cwd
+            padding = { left = 0 },
+          },
+          file_icon = { padding = { right = 1 } },
+          -- add file flags (modified, readonly, etc.)
+          file_modified = { str = "●", padding = { left = 1 } },
+          file_read_only = { str = "", padding = { left = 1 } },
+          -- disable filetype here since we'll add it separately
           filetype = false,
-          file_read_only = false,
           -- add padding
           padding = { right = 1 },
           -- define the section separator
           surround = { separator = "left", condition = false },
+        },
+        -- add file type component
+        status.component.builder {
+          {
+            provider = function()
+              local ft = vim.bo.filetype
+              if ft == "" then return "" end
+              return "[" .. ft:upper() .. "]"
+            end,
+            condition = function() return vim.bo.filetype ~= "" end,
+          },
+          hl = { fg = "file_info_bg", bg = "bg" },
+          padding = { left = 1, right = 1 },
+          surround = { separator = "none" },
         },
         -- add a component for the current git branch if it exists and use no separator for the sections
         status.component.git_branch {
@@ -129,9 +150,7 @@ return {
               end
               return ""
             end,
-            condition = function()
-              return vim.env.VIRTUAL_ENV or vim.env.CONDA_DEFAULT_ENV
-            end,
+            condition = function() return vim.env.VIRTUAL_ENV or vim.env.CONDA_DEFAULT_ENV end,
           },
           hl = { fg = "fg", bg = "bg" },
           surround = { separator = "none" },
