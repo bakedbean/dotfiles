@@ -13,14 +13,20 @@ return {
       large_buf = { size = 1024 * 256, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
       autopairs = true, -- enable autopairs at start
       cmp = true, -- enable completion at start
-      diagnostics = { virtual_text = true, virtual_lines = false }, -- diagnostic settings on startup
+      diagnostics = { virtual_text = false, virtual_lines = false }, -- diagnostic settings on startup
       highlighturl = true, -- highlight URLs at start
       notifications = true, -- enable notifications at start
     },
     -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
     diagnostics = {
-      virtual_text = true,
+      virtual_text = false,
       underline = true,
+      float = {
+        border = "rounded",
+        source = "always",
+        header = "",
+        prefix = "",
+      },
     },
     -- passed to `vim.filetype.add`
     filetypes = {
@@ -43,6 +49,7 @@ return {
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
+        updatetime = 300, -- faster cursor hold trigger (default is 4000ms)
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -75,8 +82,26 @@ return {
         -- this is useful for naming menus
         -- ["<Leader>b"] = { desc = "Buffers" },
 
+        -- Diagnostic keymaps for floating windows
+        ["<Leader>ld"] = { function() vim.diagnostic.open_float() end, desc = "Show diagnostic in popup" },
+        ["[d"] = { function() vim.diagnostic.goto_prev() end, desc = "Go to previous diagnostic" },
+        ["]d"] = { function() vim.diagnostic.goto_next() end, desc = "Go to next diagnostic" },
+
         -- setting a mapping to false will disable it
         -- ["<C-S>"] = false,
+      },
+    },
+    -- Configure auto commands
+    autocmds = {
+      -- Auto show diagnostics in popup on cursor hold
+      diagnostic_float = {
+        {
+          event = "CursorHold",
+          desc = "Show diagnostics in a floating window on cursor hold",
+          callback = function()
+            vim.diagnostic.open_float(nil, { focus = false })
+          end,
+        },
       },
     },
   },
