@@ -18,7 +18,8 @@ return {
         separators = {
           left = { "", "" }, -- separator for the left side of the statusline
           right = { " ", "" }, -- separator for the right side of the statusline
-          tab = { "", "" },
+          tab = { "", "" },
+          --tab = { "", "" },
         },
         -- add new colors that can be used by heirline
         colors = function(hl)
@@ -93,7 +94,7 @@ return {
           -- enable the file_icon and disable the highlighting based on filetype
           filename = {
             fallback = "[No Name]",
-            modify = ":.",  -- Show path relative to cwd
+            modify = ":.", -- Show path relative to cwd
             padding = { left = 0 },
           },
           file_icon = { padding = { right = 1 } },
@@ -107,23 +108,26 @@ return {
           -- define the section separator
           surround = { separator = "left", condition = false },
         },
-        -- add file type component
+        -- add a component for the current git branch if it exists and use no separator for the sections
         status.component.builder {
           {
             provider = function()
-              local ft = vim.bo.filetype
-              if ft == "" then return "" end
-              return "[" .. ft:upper() .. "]"
+              local git_branch = vim.b.gitsigns_status_dict
+              if git_branch and git_branch.head and git_branch.head ~= "" then
+                local branch_name = git_branch.head
+                local max_length = 20
+                -- Truncate branch name if too long
+                if #branch_name > max_length then branch_name = string.sub(branch_name, 1, max_length - 3) .. "..." end
+                -- Return with git icon
+                local icon = require("astroui").get_icon "GitBranch"
+                return icon .. " " .. branch_name
+              end
+              return ""
             end,
-            condition = function() return vim.bo.filetype ~= "" end,
+            condition = function() return vim.b.gitsigns_status_dict and vim.b.gitsigns_status_dict.head end,
           },
-          hl = { fg = "file_info_bg", bg = "bg" },
-          padding = { left = 1, right = 1 },
-          surround = { separator = "none" },
-        },
-        -- add a component for the current git branch if it exists and use no separator for the sections
-        status.component.git_branch {
-          git_branch = { padding = { left = 1 } },
+          hl = { fg = "git_branch_fg" },
+          padding = { left = 1 },
           surround = { separator = "none" },
         },
         -- add a component for the current git diff if it exists and use no separator for the sections
