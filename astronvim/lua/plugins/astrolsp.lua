@@ -30,7 +30,10 @@ return {
         -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
         -- "lua_ls",
         "tsserver", -- Let Biome handle formatting for TypeScript/JavaScript
+        "ts_ls", -- Also disable ts_ls formatting
         "vtsls", -- Also disable vtsls formatting if you use it
+        "prettierd", -- Disable prettierd in favor of Biome
+        "prettier", -- Disable prettier in favor of Biome
       },
       timeout_ms = 1000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
@@ -41,13 +44,15 @@ return {
     servers = {
       -- "pyright"
       "biome", -- Enable Biome LSP
+      "ruff", -- Enable Ruff LSP for Python formatting and linting
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
     config = {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
       biome = {
-        root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc"),
+        root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "package.json"),
+        cmd = { "npx", "biome", "lsp-proxy" },
       },
     },
     -- customize how language servers are attached
@@ -58,6 +63,12 @@ return {
       -- the key is the server that is being setup with `lspconfig`
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
       -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
+      
+      -- Disable conflicting TypeScript/JavaScript servers, keep ts_ls for type checking
+      tsserver = false, -- Disable tsserver
+      -- ts_ls = false, -- Keep ts_ls enabled for TypeScript type checking
+      vtsls = false, -- Disable vtsls  
+      typescript_language_server = false, -- Disable typescript-language-server
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {
