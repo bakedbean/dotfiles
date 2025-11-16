@@ -11,6 +11,7 @@ return {
       ensure_installed = {
         -- install language servers
         "lua-language-server",
+        "basedpyright", -- Python language server (pyright fork with better performance)
         "ruff", -- Ruff for Python linting and formatting
 
         -- install formatters and linters

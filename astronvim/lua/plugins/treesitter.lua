@@ -1,5 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
 -- Customize Treesitter
 
 ---@type LazySpec
@@ -11,5 +9,7 @@ return {
       "vim",
       -- add more arguments for adding more treesitter parsers
     },
+    -- Ignore Python parser - use Neovim's bundled version
+    ignore_install = { "python" },
   },
 }

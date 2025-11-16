@@ -29,6 +29,7 @@ return {
       disabled = { -- disable formatting capabilities for the listed language servers
         -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
         -- "lua_ls",
+        "basedpyright", -- Let ruff handle Python formatting
         "tsserver", -- Let Biome handle formatting for TypeScript/JavaScript
         "ts_ls", -- Also disable ts_ls formatting
         "vtsls", -- Also disable vtsls formatting if you use it
@@ -42,7 +43,7 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
+      "basedpyright", -- Python language server for go-to-definition, completions, etc.
       "biome", -- Enable Biome LSP
       "ruff", -- Enable Ruff for Python linting and formatting
     },
@@ -50,9 +51,24 @@ return {
     ---@diagnostic disable: missing-fields
     config = {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
+      basedpyright = {
+        settings = {
+          basedpyright = {
+            -- Use ruff for linting/formatting, basedpyright for type checking
+            disableOrganizeImports = true, -- Let ruff handle imports
+          },
+          python = {
+            analysis = {
+              typeCheckingMode = "basic", -- or "standard" or "strict"
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+            },
+          },
+        },
+      },
       biome = {
         root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "package.json"),
-        cmd = { "npx", "biome", "lsp-proxy" },
+        cmd = { "npx", "@biomejs/biome", "lsp-proxy" },
       },
       eslint = {
         root_dir = require("lspconfig").util.root_pattern(
