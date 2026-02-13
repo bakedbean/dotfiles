@@ -4,3 +4,7 @@
 vim.api.nvim_create_autocmd("BufEnter", {
   command = "set nornu nu",
 })
+
+-- Auto-reload: watch cwd for file changes and reload buffers
+require("custom.directory-watcher").setup({ path = vim.fn.getcwd() })
+require("custom.hotreload").setup()

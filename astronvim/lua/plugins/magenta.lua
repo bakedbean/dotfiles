@@ -2,6 +2,9 @@ return {
   "dlants/magenta.nvim",
   lazy = false, -- you could also bind to <leader>mt
   build = "npm install --frozen-lockfile",
+  dependencies = {
+    "hrsh7th/nvim-cmp",
+  },
   opts = {
     sidebarPosition = "right",
     chimeVolume = 0.0, -- Disable chime sound (set to 0.3 for 30% volume if you want it enabled)

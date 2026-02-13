@@ -11,9 +11,9 @@ return {
       ensure_installed = {
         -- install language servers
         "lua-language-server",
-        "ruff", -- Ruff for Python formatting and linting
+        "ruff", -- Ruff for Python linting and formatting
 
-        -- install formatters
+        -- install formatters and linters
         "stylua",
 
         -- install debuggers

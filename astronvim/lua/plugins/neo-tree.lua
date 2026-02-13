@@ -3,6 +3,9 @@ return {
   opts = {
     window = {
       width = 40,
+      -- Customize the window separator/border
+      -- Options: "single", "double", "rounded", "solid", "shadow", or custom array
+      -- border = "single",
     },
     default_component_configs = {
       file_size = {

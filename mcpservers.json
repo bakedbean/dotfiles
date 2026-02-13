@@ -3,9 +3,16 @@
     "postgres": {
       "command": "bunx",
       "args": [
-        "-y", 
-        "@modelcontextprotocol/server-postgres", 
+        "-y",
+        "@modelcontextprotocol/server-postgres",
         "postgresql://postgres:postgres@localhost:5432/dev"]
+    },
+    "rails-support": {
+      "command": "/Users/eben/Rails_V2/support/.venv/bin/python",
+      "args": [
+        "/Users/eben/Rails_V2/support/main.py"
+      ],
+      "cwd": "/Users/eben/Rails_V2/support"
     }
   }
 }

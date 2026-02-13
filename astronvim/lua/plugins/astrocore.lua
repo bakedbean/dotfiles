@@ -50,6 +50,7 @@ return {
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
         updatetime = 300, -- faster cursor hold trigger (default is 4000ms)
+        autoread = true, -- auto-reload files changed outside of neovim
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)

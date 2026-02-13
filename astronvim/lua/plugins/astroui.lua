@@ -14,6 +14,11 @@ return {
     highlights = {
       init = { -- this table overrides highlights in all themes
         -- Normal = { bg = "#000000" },
+
+        -- Customize NeoTree border/separator color
+        NeoTreeWinSeparator = { fg = "#808080", bg = "NONE" }, -- Green border
+        -- or customize all window separators:
+        -- WinSeparator = { fg = "#ff0000", bg = "NONE" }, -- Red border for all splits
       },
       astrodark = { -- a table of overrides/changes when applying the astrotheme theme
         -- Normal = { bg = "#000000" },
