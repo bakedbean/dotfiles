@@ -89,12 +89,6 @@ return {
       -- rust_analyzer = false, -- setting a handler to false will disable the set up of that language server
       -- pyright = function(_, opts) require("lspconfig").pyright.setup(opts) end -- or a custom handler function can be passed
 
-      -- Disable conflicting TypeScript/JavaScript servers, keep ts_ls for type checking
-      tsserver = false, -- Disable tsserver
-      -- ts_ls = false, -- Keep ts_ls enabled for TypeScript type checking
-      vtsls = false, -- Disable vtsls
-      typescript_language_server = false, -- Disable typescript-language-server
-      eslint = false, -- disable eslint LSP (using Biome instead)
     },
     -- Configure buffer local auto commands to add when attaching a language server
     autocmds = {

@@ -6,6 +6,7 @@
 return {
   "AstroNvim/astrocommunity",
   { import = "astrocommunity.pack.lua" },
+  { import = "astrocommunity.pack.typescript" },
   { import = "astrocommunity.colorscheme.aurora" },
   { import = "astrocommunity.colorscheme.vscode-nvim" },
   { import = "astrocommunity.colorscheme.nordic-nvim" },
