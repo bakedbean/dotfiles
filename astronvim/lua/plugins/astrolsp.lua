@@ -35,6 +35,7 @@ return {
         "vtsls", -- Also disable vtsls formatting if you use it
         "prettierd", -- Disable prettierd in favor of Biome
         "prettier", -- Disable prettier in favor of Biome
+        "biome", -- Disable Biome formatting, let project formatters handle it
       },
       timeout_ms = 1000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
