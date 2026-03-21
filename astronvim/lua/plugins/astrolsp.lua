@@ -51,7 +51,7 @@ return {
     config = {
       -- clangd = { capabilities = { offsetEncoding = "utf-8" } },
       biome = {
-        root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc", "package.json"),
+        root_dir = require("lspconfig").util.root_pattern("biome.json", "biome.jsonc"),
         cmd = { "npx", "biome", "lsp-proxy" },
       },
       eslint = {
